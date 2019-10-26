@@ -1,0 +1,21 @@
+{
+  "name": "air-quality",
+  "version": "1.0.0",
+  "description": "This is the data about air quality",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "air",
+    "quality",
+    "assignment"
+  ],
+  "author": "Vu Doan",
+  "license": "MIT",
+  "dependencies": {
+    "data.js": "^0.12.11",
+    "express": "^4.17.1",
+    "nedb": "^1.8.0"
+  }
+}
