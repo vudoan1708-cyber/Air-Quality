@@ -183,7 +183,7 @@ let questionMrk;
 let earthImg;
 
 
-function MediaCounter() {
+function MediaLoader() {
     mediaCounter++;
     if (mediaCounter == numOfMedia) {
         if (loading < 2) {
@@ -192,20 +192,20 @@ function MediaCounter() {
     }
 }
 
-function preload() {
-    //     airData = loadJSON('json/aq.json');
-    countries = loadJSON('json/countries/countries.json', MediaCounter);
-    questionMrk = loadImage('assets/img/question.png', MediaCounter);
-    earthImg = loadImage('assets/img/earth.png', MediaCounter);
-}
+// function preload() {
+//     //     airData = loadJSON('json/aq.json');
+//     countries = loadJSON('json/countries/countries.json', MediaCounter);
+//     questionMrk = loadImage('assets/img/question.png', MediaCounter);
+//     earthImg = loadImage('assets/img/earth.png', MediaCounter);
+// }
 
 function setup() {
     // Create canvas
     canvas = createCanvas(window.innerWidth, window.innerHeight).parent("mapID");
 
-    countries = loadJSON('json/countries/countries.json', MediaCounter);
-    questionMrk = loadImage('assets/img/question.png', MediaCounter);
-    earthImg = loadImage('assets/img/earth.png', MediaCounter);
+    countries = loadJSON('json/countries/countries.json', MediaLoader);
+    questionMrk = loadImage('assets/img/question.png', MediaLoader);
+    earthImg = loadImage('assets/img/earth.png', MediaLoader);
 
     frameRate(frames);
     angleMode(DEGREES);
