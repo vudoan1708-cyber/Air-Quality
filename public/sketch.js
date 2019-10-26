@@ -6,6 +6,7 @@ let countries;
 let legend;
 let spaceship;
 
+let loading = true; // loading screen 
 let mapEntered = false; // for mobile detection
 let getLocation = false; // trigger geolocation
 let movingForward = false; // for kepping track of the spaceship-like button movement
@@ -25,7 +26,6 @@ let menuDropped = false;
 let pollutant_menuDropped = false;
 let reSize = false; // for responding to the logged data
 
-let loading = 1; // loading screen 
 let mediaCounter = 0;
 let numOfMedia = 3;
 let frames = 160;
@@ -183,29 +183,25 @@ let questionMrk;
 let earthImg;
 
 
-function MediaLoader() {
-    mediaCounter++;
-    if (mediaCounter == numOfMedia) {
-        if (loading < 2) {
-            loading++;
-        }
-    }
-}
-
-// function preload() {
-//     //     airData = loadJSON('json/aq.json');
-//     countries = loadJSON('json/countries/countries.json', MediaCounter);
-//     questionMrk = loadImage('assets/img/question.png', MediaCounter);
-//     earthImg = loadImage('assets/img/earth.png', MediaCounter);
+// function MediaLoader() {
+//     mediaCounter++;
+//     if (mediaCounter == numOfMedia) {
+//         if (loading < 2) {
+//             loading++;
+//         }
+//     }
 // }
+
+function preload() {
+    //     airData = loadJSON('json/aq.json');
+    countries = loadJSON('json/countries/countries.json');
+    questionMrk = loadImage('assets/img/question.png');
+    earthImg = loadImage('assets/img/earth.png');
+}
 
 function setup() {
     // Create canvas
     canvas = createCanvas(window.innerWidth, window.innerHeight).parent("mapID");
-
-    countries = loadJSON('json/countries/countries.json', MediaLoader);
-    questionMrk = loadImage('assets/img/question.png', MediaLoader);
-    earthImg = loadImage('assets/img/earth.png', MediaLoader);
 
     frameRate(frames);
     angleMode(DEGREES);
@@ -226,7 +222,7 @@ function setup() {
     getAQ()
         .then(aq => {
             airData = aq;
-            loading++;
+            loading = false;
         })
         .catch(err => {
             console.log(err);
@@ -237,7 +233,7 @@ function setup() {
 function draw() {
     // to update bubbles on the map
 
-    if (loading < 3 && loading > 0) {
+    if (loading) {
         mappedScl = map(sin(frameCount) * 9, -1, 1, 0.15, 1);
         background(0, 250);
         push();
@@ -829,7 +825,7 @@ function touchStarted() {
 
 function mousePressed() {
     // enter the map
-    if (loading >= 3) {
+    if (!loading) {
         if (!mapEntered) {
             let d = dist(mouseX, mouseY, width / 2, height / 2);
             if (d < 200) {
