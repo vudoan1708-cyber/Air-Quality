@@ -8,7 +8,7 @@ database.loadDatabase(); // used to create a database file
 submission_database.loadDatabase();
 // create a host port
 const port = process.env.PORT || 5500;
-app.listen(5500, () => {
+app.listen(port, () => {
     console.log(`listening at port ${port}`);
 });
 app.use(express.static("public")); // use public folder as the entry to the site
