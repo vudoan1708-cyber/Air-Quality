@@ -7,8 +7,9 @@ const submission_database = new Datastore('submission_count.db');
 database.loadDatabase(); // used to create a database file
 submission_database.loadDatabase();
 // create a host port
+const port = process.env.PORT || 5500;
 app.listen(5500, () => {
-    console.log("listening at port 5500");
+    console.log(`listening at port ${port}`);
 });
 app.use(express.static("public")); // use public folder as the entry to the site
 app.use(express.json({limit: '1mb'})); // convert any request into a json file
