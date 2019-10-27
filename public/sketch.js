@@ -9,6 +9,7 @@ let spaceship;
 let loading = true; // loading screen 
 let mapEntered = false; // for mobile detection
 let getLocation = false; // trigger geolocation
+let waitMessage = false; // wait time before a location is marked
 let movingForward = false; // for kepping track of the spaceship-like button movement
 let movingBackward = false; // for kepping track of the spaceship-like button movement
 let infoBtn_clicked = false; // information btn
@@ -267,7 +268,25 @@ function draw() {
         if (mapEntered) {
             clear(); // transparent background
             airVisualisation();
-            // myMap.onChange(airVisualisation);
+            
+            mappedAlpha = map(animTime, 0, 15, 255, 0);
+            if (waitMessage) { // wait message before geolocation starts
+                if (animTime <= 14) {
+                  animTime++;
+                } else {
+                  animTime = 0;
+                  waitMessage = false;
+                }
+                push();
+                  fill(255, mappedAlpha);
+                  rectMode(CENTER);
+                  rect(width / 2, height / 2, 200, 50);
+                  fill(0, mappedAlpha);
+                  textAlign(CENTER);
+                  textSize(20);
+                  text("Just a sec...", width / 2 + 10, height / 2 + 40, 200, 100);
+                pop();
+              } 
         }
     }
 }
@@ -1176,6 +1195,7 @@ async function userSubmission() {
 
 function getUserLocation() {
     if (getLocation) {
+        waitMessage = true;
         // current logged location
         if ('geolocation' in navigator) {
             console.log("geolocation is available");
