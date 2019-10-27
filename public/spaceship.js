@@ -59,7 +59,7 @@ class Spaceship {
                 fill(red, green, blue);
             } else fill(255);
             beginShape();
-                for (let a = 0; a <= 360; a += 36) {
+                for (let a = 0; a < 360; a += 36) {
                         let dx = cos(a) * (this.d - 8) / 2;
                         let dy = sin(a) * (this.d - 8) / 2;
                         ellipse(this.x + dx, this.y + dy, 5);
@@ -560,6 +560,12 @@ class Spaceship {
             translate(width, 0); // translate to top right corner
             // imageMode(CORNERS);
             image(questionMrk, this.Fx, this.Fy, this.F_size, this.F_size);
+            if (this.filter_hovered()) {
+                fill(51, 50);
+                noStroke();
+                ellipseMode(CENTER);
+                ellipse(this.Fx + this.F_size / 2, this.Fy + this.F_size / 2, this.F_size);
+              }
             // rectMode(CORNERS);
             // rect(this.Fx, this.Fy, this.F_size, this.F_size);
 
