@@ -536,19 +536,39 @@ class Spaceship {
     showCloseInfo() {
         mappedAlpha = map(animTime, 0, 15, 0, 250);
         push();
-            if (!mobile) {
+        if (!mobile) {
+            if (this.hoveredCloseInfo()) {
+                fill(51, mappedAlpha);
+                ellipse(width / 2 + width / 4, height / 2 - height / 4, 50);
+                fill(255, mappedAlpha);
+                textAlign(CENTER);
+                strokeWeight(2);
+                textSize(20);
+                text("X", width / 2 + width / 4, height / 2 - height / 4);
+            } else {
                 fill(51, mappedAlpha);
                 ellipse(width / 2 + width / 4, height / 2 - height / 4, 50);
                 fill(255, mappedAlpha);
                 textAlign(CENTER);
                 text("X", width / 2 + width / 4, height / 2 - height / 4);
-            } else {
+            }                
+          } else {
+              if (this.hoveredCloseInfo()) {
                 fill(51, mappedAlpha);
                 ellipse(width / 2 + width / 4 + 70, height / 2 - height / 4, 50);
                 fill(255, mappedAlpha);
                 textAlign(CENTER);
-                text("X", width / 2 + width / 4 + 70, height / 2 - height / 4);
-            }
+                strokeWeight(2);
+                textAlign(CENTER);
+                text("X", width / 2 + width / 4 + 70, height / 2 - height / 4); 
+              } else {
+                  fill(51, mappedAlpha);
+                  ellipse(width / 2 + width / 4 + 70, height / 2 - height / 4, 50);
+                  fill(255, mappedAlpha);
+                  textAlign(CENTER);
+                  text("X", width / 2 + width / 4 + 70, height / 2 - height / 4);
+              }
+          }
             
         pop();
     }
