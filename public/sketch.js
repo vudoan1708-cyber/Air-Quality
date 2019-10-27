@@ -1000,10 +1000,6 @@ function mousePressed() {
         if (spaceship.R_btn_hovered()) {
             // console.log(btn_activated);
             infoBtn_clicked = true;
-            if (clickCnt == 1) {
-                movingBackward = true;
-                clickCnt = 0;
-              }
         }
         if (infoBtn_clicked) {
             if (spaceship.hoveredCloseInfo()) {
