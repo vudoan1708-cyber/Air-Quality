@@ -199,19 +199,21 @@ class Spaceship {
 
             // next, previous button
             if (btn_activated > 1 && btn_activated < 7) { // left button disappears if it reaches 1 or 7
+                if (this.prev_btn_hovered()) textSize(30);                
+                else textSize(25);
                 fill(255, 200);
                 rect(this.pBtnX, this.pBtnY, this.Btn_size, this.Btn_size);
                 fill(0);
                 textAlign(CENTER);
-                textSize(25);
                 text("<", this.pBtnX, this.pBtnY + 8);
             }
             if (btn_activated < 6 && btn_activated > 0) { // right button disappears if it reaches 6
+                if (this.next_btn_hovered()) textSize(30);
+                else textSize(25);
                 fill(255, 200);
                 rect(this.nBtnX, this.nBtnY, this.Btn_size, this.Btn_size);
                 fill(0);
                 textAlign(CENTER);
-                textSize(25);
                 text(">", this.nBtnX, this.nBtnY + 8);
             }
 

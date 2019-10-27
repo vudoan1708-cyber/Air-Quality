@@ -981,6 +981,10 @@ function mousePressed() {
         if (spaceship.R_btn_hovered()) {
             // console.log(btn_activated);
             infoBtn_clicked = true;
+            if (clickCnt == 1) {
+                movingBackward = true;
+                clickCnt = 0;
+              }
         }
         if (infoBtn_clicked) {
             if (spaceship.hoveredCloseInfo()) {
@@ -1200,7 +1204,7 @@ function getUserLocation() {
                 // the map id has to come before .map method
                 // adding marker
                 const popUp = "You're currently here at a latitude of " + json.latitude + " and a longitude of " + json.longitude;
-                const marker = L.marker([json.latitude, json.longitude])
+                const marker = L.marker([json.latitude, json.longitude], {opacity: 0.5})
                                         .bindPopup(popUp)
                                         .addTo(myMap.map); // myMap.map because I'm using mappa.js, not purely leaflet.js, in order to access the base map library
                                                             // the map id has to come before .map method
