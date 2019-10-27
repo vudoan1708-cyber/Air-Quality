@@ -469,6 +469,39 @@ function airVisualisation() {
                         // line(pos.x, pos.y, pos.x + dx, pos.y + dy);
                     endShape(CLOSE);
 
+                    // let angle = 0;
+                    // beginShape();
+                    // translate(pos.x, pos.y);
+                    // for (let i = 0; i < 360; i += 26) {
+                        
+                    //     let x = cos(i) * diameter;
+                    //     let y = sin(i) * diameter;
+                    //     // if (val < 100) {
+                    //     //   strokeWeight(1);
+                    //     // } else strokeWeight(3);
+                    //     // vertex(x, y);
+                    //     rotate(angle);
+                    //     line(0, 0, x, y);
+                    //     angle += 0.01;
+                        
+                    // }
+                    // endShape(CLOSE);
+                    
+                   
+                    // let n = 6;
+                    // let de = 71;                   
+                    // strokeWeight(1);
+                    // beginShape();
+                    //     for (let i = 0; i < 360; i++) {
+                    //     let k = i * de;
+                    //     let r = sin(n*k) * diameter;
+                    //     let x = cos(k) * r;
+                    //     let y = sin(k) * r;
+                    //     vertex(x + pos.x, y + pos.y);
+                    //     }
+                    // endShape(CLOSE);
+                    
+
                     // for (let a = 0; a <= 360; a++) {
                     //     let dx = cos(a) * diameter / 2;
                     //     let dy = sin(a) * diameter / 2;
