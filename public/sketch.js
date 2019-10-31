@@ -40,6 +40,13 @@ let angle = 0; // for visualising the data
 
 // let subCount = 0; // for counting submitting time
 let animTime = 0; // for animation
+let totalSub = 0;
+let COCnt = 0;
+let O3Cnt = 0;
+let NO2Cnt = 0;
+let SO2Cnt = 0;
+let PM10Cnt = 0;
+let PM25Cnt = 0;
 
 let country; // check each country
 let pollutant; // check all pollutants in each country
@@ -278,10 +285,10 @@ function draw() {
                   waitMessage = false;
                 }
                 push();
-                  fill(255, mappedAlpha);
+                  fill(0, mappedAlpha);
                   rectMode(CENTER);
                   rect(width / 2, height / 2, 200, 50);
-                  fill(0, mappedAlpha);
+                  fill(255, mappedAlpha);
                   textAlign(CENTER);
                   textSize(20);
                   text("Just a sec...", width / 2 + 10, height / 2 + 40, 200, 100);
@@ -290,6 +297,11 @@ function draw() {
         }
     }
 }
+
+function windowResized(){
+    resizeCanvas(window.innerWidth, window.innerHeight);
+}
+
 // for checking electronic devices
 function enterTheMap() {
     let d = dist(mouseX, mouseY, width / 2, height / 2);
@@ -353,7 +365,7 @@ function airVisualisation() {
                     country = country;
                     latlon = countries[country];
                 } else {
-                    country = " ";
+                    country = "Beautiful Boy";
                     latlon = countries[country];
                 }
             } else if (yearsSelection == 3) { // same logic
@@ -361,11 +373,10 @@ function airVisualisation() {
                     country = country;
                     latlon = countries[country];
                 } else {
-                    country = " ";
+                    country = "Handsome Girl";
                     latlon = countries[country];
                 }
             } else latlon = countries[country]; // if it's 0, then show everything
-            // console.log(parse);
 
 
         // filter for pollutants (same logic)
@@ -406,7 +417,7 @@ function airVisualisation() {
                     country = country;
                     latlon = countries[country];
                 } else {
-                    country = "Thai Hot Pot";
+                    country = "Hot Pot";
                     latlon = countries[country];
                 } 
             } else if (pollutantSelection == 6) {
@@ -440,7 +451,7 @@ function airVisualisation() {
                     }
                     if (pollutants[i] == "PM2.5") {
                         diameter = sqrt(val) * myMap.zoom() * (0.9 / (i+1) * 0.95); // calculate the area of circles relatively to zoom levels
-                    }
+                    };
                 }
                 // reSize = false;
             } else if (!isSubmitted) diameter = sqrt(val) * myMap.zoom();
@@ -480,7 +491,7 @@ function airVisualisation() {
                         angle += 2;
                         diameter -= 10;
                     } else angle = 0;
-                    beginShape();
+                    beginShape(POINTS);
                         strokeWeight(3.5);
                         let dx = cos(angle) * diameter / 2;
                         let dy = sin(angle) * diameter / 2;
@@ -601,6 +612,36 @@ function displaySpaceship() {
 function drawLegend() {
     legend.show();
     legend.showDescription();
+    push();
+      let x;
+      let y;
+      if (!mobile) { // if not touchscreen devices
+         x = width - width / 6 + 30;
+         y = height - 25;
+      } else {
+         x = 20;
+         y = height - 220;
+      }
+      fill(0, 200);
+      if (!mobile) rect(width - 250, height - 200, 250, 200);
+      else rect(0, height - 400, 250, 200);
+      fill(255);
+      if (!mobile) textSize(15);
+      else textSize(10);
+  
+      if (reSize) { // if all the ellipses are resized, show all the texts
+        text("Total Number of Submissions  " + totalSub, x, y - 150, 250, 50);
+        text("Votes for CO  " + COCnt, x, y - 125, 150, 50);
+        text("Votes for O3  " + O3Cnt, x, y - 100, 150, 50);
+        text("Votes for NO2  " + NO2Cnt, x, y - 75, 150, 50);
+        text("Votes for SO2  " + SO2Cnt, x, y - 50, 150, 50);
+        text("Votes for PM10  " + PM10Cnt, x, y - 25, 150, 50);
+        text("Votes for PM2.5  " + PM25Cnt, x, y, 150, 50);
+      } else { // if not
+          textAlign(CENTER);
+          text("Submit Your Thought On \nReducing Pollutants To See Results", x - 20, y - 75, 250, 50); // show this text at the beginning
+        }
+    pop();
 }
 
 function touchStarted() {
@@ -1169,7 +1210,7 @@ async function userSubmission() {
     if (isSubmitted) {
         isSubmitted = false;
         const data_counts = {pollutants};
-        // console.log(data_counts);
+        console.log(pollutants);
         const sub_options = {
             method: "POST",
             headers: {
@@ -1180,12 +1221,20 @@ async function userSubmission() {
         const sub_response = await fetch("/submission", sub_options); // sending to server
         const sub_json = await sub_response.json(); // make the response from server into an object
 
-        for (let i = 0; i < sub_json.pollutant.length; i++) {
-            pollutants[i] = sub_json.pollutant[i];
-        }
         console.log(sub_json);
+      
+        for (let i = 0; i < sub_json.length; i++) {
+          totalSub = sub_json.length + 1;
+          for (let j = 0; j < sub_json[i].pollutants.length; j++) {
+            if (sub_json[i].pollutants[j] == "CO") COCnt++;
+            else if (sub_json[i].pollutants[j] == "O3") O3Cnt++;
+            else if (sub_json[i].pollutants[j] == "NO2") NO2Cnt++;
+            else if (sub_json[i].pollutants[j] == "SO2") SO2Cnt++;
+            else if (sub_json[i].pollutants[j] == "PM10") PM10Cnt++;
+            else if (sub_json[i].pollutants[j] == "PM2.5") PM25Cnt++;
+          }
+        }
         reSize = true;
-        return pollutants;
     }
 }
 
@@ -1235,11 +1284,3 @@ function getUserLocation() {
         getLocation = false; // disable immediately after being triggered on
     }
 }
-// adding layer map
-// L.tileLayer(
-//     `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidnVkb2FuMTcwOCIsImEiOiJjazFtZWx6ZnkwZWV0M21wZmJsZXUwZmpqIn0.coo8NhKv85xMgJ7WyhWxbg`, {
-//         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-//         maxZoom: 18,
-//         id: 'mapbox.streets',
-//         accessToken: 'your.mapbox.access.token'
-//     }).addTo(myMap);

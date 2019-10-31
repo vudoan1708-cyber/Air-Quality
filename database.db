@@ -6,6 +6,7 @@
 {"loglat":51.4981888,"loglon":-2.5378816,"timestamp":1571910950617,"_id":"3oYof20u8V6I0Zj8"}
 {"loglat":51.4683728,"loglon":-2.506293,"timestamp":1572033456240,"_id":"4aR5kIbGoR5HfuTG"}
 {"loglat":51.4981888,"loglon":-2.5378816,"timestamp":1571909354007,"_id":"5MsXc7yhq184l58W"}
+{"loglat":55.755826,"loglon":37.6173,"timestamp":1572398235612,"_id":"5akEgFdSyWPKX5wP"}
 {"loglat":31.230416,"loglon":121.473701,"val":1.0799999,"timestamp":1572083786040,"_id":"6N7s9kyNDwRCKIL9"}
 {"loglat":52.520007,"loglon":13.404954,"timestamp":1571915471923,"_id":"6tnILveSLMGN9CSO"}
 {"loglat":51.4683846,"loglon":-2.506275,"timestamp":1572031104074,"_id":"7iUozUZaPWszomim"}
@@ -14,6 +15,7 @@
 {"loglat":51.4683803,"loglon":-2.5063131,"timestamp":1572042260310,"_id":"9UwdN2CeipjL4ESd"}
 {"loglat":51.4981888,"loglon":-2.5378816,"timestamp":1571914205137,"_id":"9VTMeQQHKzyQ68hw"}
 {"loglat":51.4981888,"loglon":-2.5378816,"timestamp":1571910950618,"_id":"A1lVbDs568pHTdYv"}
+{"loglat":51.4683874,"loglon":-2.5062390999999997,"timestamp":1572398220124,"_id":"BQiQMWyK2BdQkRTx"}
 {"loglat":51.4683672,"loglon":-2.5063005,"timestamp":1571948901190,"_id":"C0V1Ra5zjVFxSXaW"}
 {"loglat":51.468367099999995,"loglon":-2.5062935,"timestamp":1572024995017,"_id":"CJLhj3of5nqNDfdZ"}
 {"loglat":52.520007,"loglon":13.404954,"timestamp":1571957120233,"_id":"CX4OpVMYqR6kZ5Rc"}
@@ -60,7 +62,9 @@
 {"loglat":37.386052,"loglon":-122.083851,"timestamp":1571948963893,"_id":"tWERqrcnMwKI6fVL"}
 {"loglat":51.4683754,"loglon":-2.5062785,"val":1.0799999,"timestamp":1572083552999,"_id":"tqN0xIbLKASLEHyw"}
 {"loglat":51.468367099999995,"loglon":-2.5062935,"timestamp":1572025106504,"_id":"vD3bFPuAEujvgnPj"}
+{"loglat":51.4683602,"loglon":-2.5062520999999998,"timestamp":1572395387914,"_id":"vERNvWSPfPNloeSV"}
 {"loglat":51.4683996,"loglon":-2.5062658,"timestamp":1572030458603,"_id":"wCXYCqOJGQgER0tt"}
+{"loglat":51.468354,"loglon":-2.5062705999999997,"timestamp":1572291024936,"_id":"wdZp8E9P5G40dAqj"}
 {"loglat":51.4981888,"loglon":-2.5378816,"timestamp":1571914745010,"_id":"weQxzMietjMDmcx8"}
 {"loglat":51.468395099999995,"loglon":-2.506281,"timestamp":1571956950463,"_id":"x9ug2NAoIyUjWM88"}
 {"loglat":51.468367099999995,"loglon":-2.5062935,"timestamp":1572030171740,"_id":"xcE0JvA7ptAdtHqT"}

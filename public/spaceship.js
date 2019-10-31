@@ -199,8 +199,8 @@ class Spaceship {
 
             // next, previous button
             if (btn_activated > 1 && btn_activated < 7) { // left button disappears if it reaches 1 or 7
-                if (this.prev_btn_hovered()) textSize(30);                
-                else textSize(25);
+              if (this.prev_btn_hovered()) textSize(30);                
+              else textSize(25);
                 fill(255, 200);
                 rect(this.pBtnX, this.pBtnY, this.Btn_size, this.Btn_size);
                 fill(0);
@@ -208,8 +208,8 @@ class Spaceship {
                 text("<", this.pBtnX, this.pBtnY + 8);
             }
             if (btn_activated < 6 && btn_activated > 0) { // right button disappears if it reaches 6
-                if (this.next_btn_hovered()) textSize(30);
-                else textSize(25);
+              if (this.next_btn_hovered()) textSize(30);
+              else textSize(25);
                 fill(255, 200);
                 rect(this.nBtnX, this.nBtnY, this.Btn_size, this.Btn_size);
                 fill(0);
@@ -401,6 +401,7 @@ class Spaceship {
                     //submit text
                     if (chosenBx1 || chosenBx2 || chosenBx3 || chosenBx4 ||
                         chosenBx5 || chosenBx6) { // if one or more checkboxes are chosen, then fill white
+                        if (this.submit_hovered()) textSize(15);
                             fill(255);
                         } else fill(51); // else grey out the text
                     textAlign(CENTER);
@@ -408,106 +409,106 @@ class Spaceship {
                 }
             } else { // if it is touch screen devices
                 if (btn_activated == 1) {
-                    text(referenceText_CO[0], width / 4 - 255, 60 - height / 4);
-                    text(referenceText_CO[1], width / 4 - 255, 70 - height / 4);
-                    text(referenceText_CO[2], width / 4 - 255, 90 - height / 4);
-                    text(referenceText_CO[3], width / 4 - 255, 100 - height / 4);
-                    text(referenceText_CO[4], width / 4 - 255, 120 - height / 4);
-                    text(referenceText_CO[5], width / 4 - 255, 140 - height / 4);
-                    text(referenceText_CO[6], width / 4 - 255, 160 - height / 4);
-                    text(referenceText_CO[7], width / 4 - 255, 170 - height / 4);
+                    text(referenceText_CO[0], width / 4 - 250, 60 - height / 4);
+                    text(referenceText_CO[1], width / 4 - 250, 70 - height / 4);
+                    text(referenceText_CO[2], width / 4 - 250, 90 - height / 4);
+                    text(referenceText_CO[3], width / 4 - 250, 100 - height / 4);
+                    text(referenceText_CO[4], width / 4 - 250, 120 - height / 4);
+                    text(referenceText_CO[5], width / 4 - 250, 140 - height / 4);
+                    text(referenceText_CO[6], width / 4 - 250, 160 - height / 4);
+                    text(referenceText_CO[7], width / 4 - 250, 170 - height / 4);
     
-                    text(referenceText_CO[8], width / 4 - 255, 200 - height / 4);
-                    text(referenceText_CO[9], width / 4 - 255, 220 - height / 4);
-                    text(referenceText_CO[10], width / 4 - 255, 240 - height / 4);
-                    text(referenceText_CO[11], width / 4 - 255, 260 - height / 4);
-                    text(referenceText_CO[12], width / 4 - 255, 280 - height / 4);
+                    text(referenceText_CO[8], width / 4 - 250, 200 - height / 4);
+                    text(referenceText_CO[9], width / 4 - 250, 220 - height / 4);
+                    text(referenceText_CO[10], width / 4 - 250, 240 - height / 4);
+                    text(referenceText_CO[11], width / 4 - 250, 260 - height / 4);
+                    text(referenceText_CO[12], width / 4 - 250, 280 - height / 4);
                     textAlign(RIGHT);
                     text(referenceText_CO[13], width / 4 + 60, 280 - height / 4);
                 } else if (btn_activated == 2) {
-                    text(referenceText_O3[0], width / 4 - 255, 60 - height / 4);
-                    text(referenceText_O3[1], width / 4 - 255, 70 - height / 4);
-                    text(referenceText_O3[2], width / 4 - 255, 90 - height / 4);
-                    text(referenceText_O3[3], width / 4 - 255, 100 - height / 4);
-                    text(referenceText_O3[4], width / 4 - 255, 120 - height / 4);
+                    text(referenceText_O3[0], width / 4 - 250, 60 - height / 4);
+                    text(referenceText_O3[1], width / 4 - 250, 70 - height / 4);
+                    text(referenceText_O3[2], width / 4 - 250, 90 - height / 4);
+                    text(referenceText_O3[3], width / 4 - 250, 100 - height / 4);
+                    text(referenceText_O3[4], width / 4 - 250, 120 - height / 4);
     
-                    text(referenceText_O3[5], width / 4 - 255, 180 - height / 4);
-                    text(referenceText_O3[6], width / 4 - 255, 200 - height / 4);
-                    text(referenceText_O3[7], width / 4 - 255, 220 - height / 4);
-                    text(referenceText_O3[8], width / 4 - 255, 240 - height / 4);
-                    text(referenceText_O3[9], width / 4 - 255, 260 - height / 4);
+                    text(referenceText_O3[5], width / 4 - 250, 180 - height / 4);
+                    text(referenceText_O3[6], width / 4 - 250, 200 - height / 4);
+                    text(referenceText_O3[7], width / 4 - 250, 220 - height / 4);
+                    text(referenceText_O3[8], width / 4 - 250, 240 - height / 4);
+                    text(referenceText_O3[9], width / 4 - 250, 260 - height / 4);
     
                     textAlign(RIGHT);
                     text(referenceText_O3[10], width / 4 + 60, 280 - height / 4);
                 } else if (btn_activated == 3) {
-                    text(referenceText_SO2[0], width / 4 - 255, 60 - height / 4);
-                    text(referenceText_SO2[1], width / 4 - 255, 70 - height / 4);
-                    text(referenceText_SO2[2], width / 4 - 255, 80 - height / 4);
-                    text(referenceText_SO2[3], width / 4 - 255, 120 - height / 4);
-                    text(referenceText_SO2[4], width / 4 - 255, 140 - height / 4);
-                    text(referenceText_SO2[5], width / 4 - 255, 160 - height / 4);
-                    text(referenceText_SO2[6], width / 4 - 255, 180 - height / 4);
-                    text(referenceText_SO2[7], width / 4 - 255, 220 - height / 4);
+                    text(referenceText_SO2[0], width / 4 - 250, 60 - height / 4);
+                    text(referenceText_SO2[1], width / 4 - 250, 70 - height / 4);
+                    text(referenceText_SO2[2], width / 4 - 250, 80 - height / 4);
+                    text(referenceText_SO2[3], width / 4 - 250, 120 - height / 4);
+                    text(referenceText_SO2[4], width / 4 - 250, 140 - height / 4);
+                    text(referenceText_SO2[5], width / 4 - 250, 160 - height / 4);
+                    text(referenceText_SO2[6], width / 4 - 250, 180 - height / 4);
+                    text(referenceText_SO2[7], width / 4 - 250, 220 - height / 4);
                     textAlign(RIGHT);
                     text(referenceText_SO2[8], width / 4 + 60, 280 - height / 4);
                 } else if (btn_activated == 4) {
-                    text(referenceText_NO2[0], width / 4 - 255, 60 - height / 4);
-                    text(referenceText_NO2[1], width / 4 - 255, 70 - height / 4);
-                    text(referenceText_NO2[2], width / 4 - 255, 90 - height / 4);
-                    text(referenceText_NO2[3], width / 4 - 255, 100 - height / 4);
-                    text(referenceText_NO2[4], width / 4 - 255, 140 - height / 4);
-                    text(referenceText_NO2[5], width / 4 - 255, 150 - height / 4);
-                    text(referenceText_NO2[6], width / 4 - 255, 160 - height / 4);
-                    text(referenceText_NO2[7], width / 4 - 255, 180 - height / 4);
-                    text(referenceText_NO2[8], width / 4 - 255, 200 - height / 4);
-                    text(referenceText_NO2[9], width / 4 - 255, 220 - height / 4);
-                    text(referenceText_NO2[10], width / 4 - 255, 260 - height / 4);
-                    text(referenceText_NO2[11], width / 4 - 255, 270 - height / 4);
-                    text(referenceText_NO2[12], width / 4 - 255, 290 - height / 4);
-                    text(referenceText_NO2[13], width / 4 - 255, 310 - height / 4);
-                    text(referenceText_NO2[14], width / 4 - 255, 330 - height / 4);
-                    text(referenceText_NO2[15], width / 4 - 255, 360 - height / 4);
-                    text(referenceText_NO2[16], width / 4 - 255, 370 - height / 4);
-                    text(referenceText_NO2[17], width / 4 - 255, 390 - height / 4);
-                    text(referenceText_NO2[18], width / 4 - 255, 410 - height / 4);
+                    text(referenceText_NO2[0], width / 4 - 250, 60 - height / 4);
+                    text(referenceText_NO2[1], width / 4 - 250, 70 - height / 4);
+                    text(referenceText_NO2[2], width / 4 - 250, 90 - height / 4);
+                    text(referenceText_NO2[3], width / 4 - 250, 100 - height / 4);
+                    text(referenceText_NO2[4], width / 4 - 250, 140 - height / 4);
+                    text(referenceText_NO2[5], width / 4 - 250, 150 - height / 4);
+                    text(referenceText_NO2[6], width / 4 - 250, 160 - height / 4);
+                    text(referenceText_NO2[7], width / 4 - 250, 180 - height / 4);
+                    text(referenceText_NO2[8], width / 4 - 250, 200 - height / 4);
+                    text(referenceText_NO2[9], width / 4 - 250, 220 - height / 4);
+                    text(referenceText_NO2[10], width / 4 - 250, 260 - height / 4);
+                    text(referenceText_NO2[11], width / 4 - 250, 270 - height / 4);
+                    text(referenceText_NO2[12], width / 4 - 250, 290 - height / 4);
+                    text(referenceText_NO2[13], width / 4 - 250, 310 - height / 4);
+                    text(referenceText_NO2[14], width / 4 - 250, 330 - height / 4);
+                    text(referenceText_NO2[15], width / 4 - 250, 360 - height / 4);
+                    text(referenceText_NO2[16], width / 4 - 250, 370 - height / 4);
+                    text(referenceText_NO2[17], width / 4 - 250, 390 - height / 4);
+                    text(referenceText_NO2[18], width / 4 - 250, 410 - height / 4);
                     textAlign(RIGHT);
                     text(referenceText_NO2[19], width / 4 + 60, 410 - height / 4);
                 } else if (btn_activated == 5) {
-                    text(referenceText_PM10[0], width / 4 - 255, 60 - height / 4);
-                    text(referenceText_PM10[1], width / 4 - 255, 70 - height / 4);
-                    text(referenceText_PM10[2], width / 4 - 255, 90 - height / 4);
-                    text(referenceText_PM10[3], width / 4 - 255, 110 - height / 4);
-                    text(referenceText_PM10[4], width / 4 - 255, 120 - height / 4);
-                    text(referenceText_PM10[5], width / 4 - 255, 130 - height / 4);
-                    text(referenceText_PM10[6], width / 4 - 255, 140 - height / 4);
-                    text(referenceText_PM10[7], width / 4 - 255, 160 - height / 4);
-                    text(referenceText_PM10[8], width / 4 - 255, 180 - height / 4);
-                    text(referenceText_PM10[9], width / 4 - 255, 220 - height / 4);
+                    text(referenceText_PM10[0], width / 4 - 250, 60 - height / 4);
+                    text(referenceText_PM10[1], width / 4 - 250, 70 - height / 4);
+                    text(referenceText_PM10[2], width / 4 - 250, 90 - height / 4);
+                    text(referenceText_PM10[3], width / 4 - 250, 110 - height / 4);
+                    text(referenceText_PM10[4], width / 4 - 250, 120 - height / 4);
+                    text(referenceText_PM10[5], width / 4 - 250, 130 - height / 4);
+                    text(referenceText_PM10[6], width / 4 - 250, 140 - height / 4);
+                    text(referenceText_PM10[7], width / 4 - 250, 160 - height / 4);
+                    text(referenceText_PM10[8], width / 4 - 250, 180 - height / 4);
+                    text(referenceText_PM10[9], width / 4 - 250, 220 - height / 4);
                     textAlign(RIGHT);
                     text(referenceText_PM10[10], width / 4 + 60, 240 - height / 4);
                 } else if (btn_activated == 6) {
-                    text(referenceText_PM25[0], width / 4 - 255, 60 - height / 4);
-                    text(referenceText_PM25[1], width / 4 - 255, 70 - height / 4);
-                    text(referenceText_PM25[2], width / 4 - 255, 90 - height / 4);
-                    text(referenceText_PM25[3], width / 4 - 255, 100 - height / 4);
-                    text(referenceText_PM25[4], width / 4 - 255, 140 - height / 4);
-                    text(referenceText_PM25[5], width / 4 - 255, 150 - height / 4);
-                    text(referenceText_PM25[6], width / 4 - 255, 170 - height / 4);
-                    text(referenceText_PM25[8], width / 4 - 255, 190 - height / 4);
+                    text(referenceText_PM25[0], width / 4 - 250, 60 - height / 4);
+                    text(referenceText_PM25[1], width / 4 - 250, 70 - height / 4);
+                    text(referenceText_PM25[2], width / 4 - 250, 90 - height / 4);
+                    text(referenceText_PM25[3], width / 4 - 250, 100 - height / 4);
+                    text(referenceText_PM25[4], width / 4 - 250, 140 - height / 4);
+                    text(referenceText_PM25[5], width / 4 - 250, 150 - height / 4);
+                    text(referenceText_PM25[6], width / 4 - 250, 170 - height / 4);
+                    text(referenceText_PM25[8], width / 4 - 250, 190 - height / 4);
                     textAlign(RIGHT);
                     text(referenceText_PM25[9], width / 4 + 60, 240 - height / 4);
                 } else if (btn_activated == 7) {
-                    text(aboutText[0], width / 4 - 255, 60 - height / 4);
-                    text(aboutText[1], width / 4 - 255, 80 - height / 4);
-                    text(aboutText[2], width / 4 - 255, 100 - height / 4);
-                    text(aboutText[3], width / 4 - 255, 120 - height / 4);
-                    text(aboutText[4], width / 4 - 255, 140 - height / 4);
+                    text(aboutText[0], width / 4 - 250, 60 - height / 4);
+                    text(aboutText[1], width / 4 - 250, 80 - height / 4);
+                    text(aboutText[2], width / 4 - 250, 100 - height / 4);
+                    text(aboutText[3], width / 4 - 250, 120 - height / 4);
+                    text(aboutText[4], width / 4 - 250, 140 - height / 4);
     
-                    text(aboutText[5], width / 4 - 255, 200 - height / 4);
-                    text(aboutText[6], width / 4 - 255, 220 - height / 4);
-                    text(aboutText[7], width / 4 - 255, 240 - height / 4);
+                    text(aboutText[5], width / 4 - 250, 200 - height / 4);
+                    text(aboutText[6], width / 4 - 250, 220 - height / 4);
+                    text(aboutText[7], width / 4 - 250, 240 - height / 4);
     
-                    text(aboutText[8], width / 4 - 255, 300 - height / 4);
+                    text(aboutText[8], width / 4 - 250, 300 - height / 4);
                     textAlign(RIGHT);
                     text(aboutText[9], width / 4 + 60, 320 - height / 4);
                 } else if (btn_activated == 8) {
@@ -522,6 +523,7 @@ class Spaceship {
                     //submit text
                     if (chosenBx1 || chosenBx2 || chosenBx3 || chosenBx4 ||
                         chosenBx5 || chosenBx6) { // if one or more checkboxes are chosen, then fill white
+                            if (this.submit_hovered()) textSize(15);
                             fill(255);
                         } else fill(51); // else grey out the text
                     textAlign(CENTER);   
@@ -538,39 +540,39 @@ class Spaceship {
     showCloseInfo() {
         mappedAlpha = map(animTime, 0, 15, 0, 250);
         push();
-        if (!mobile) {
-            if (this.hoveredCloseInfo()) {
-                fill(51, mappedAlpha);
-                ellipse(width / 2 + width / 4, height / 2 - height / 4, 50);
-                fill(255, mappedAlpha);
-                textAlign(CENTER);
-                strokeWeight(2);
-                textSize(20);
-                text("X", width / 2 + width / 4, height / 2 - height / 4);
-            } else {
-                fill(51, mappedAlpha);
-                ellipse(width / 2 + width / 4, height / 2 - height / 4, 50);
-                fill(255, mappedAlpha);
-                textAlign(CENTER);
-                text("X", width / 2 + width / 4, height / 2 - height / 4);
-            }                
-          } else {
+            if (!mobile) {
               if (this.hoveredCloseInfo()) {
-                fill(51, mappedAlpha);
-                ellipse(width / 2 + width / 4 + 70, height / 2 - height / 4, 50);
-                fill(255, mappedAlpha);
-                textAlign(CENTER);
-                strokeWeight(2);
-                textAlign(CENTER);
-                text("X", width / 2 + width / 4 + 70, height / 2 - height / 4); 
+                  fill(51, mappedAlpha);
+                  ellipse(width / 2 + width / 4, height / 2 - height / 4, 50);
+                  fill(255, mappedAlpha);
+                  textAlign(CENTER);
+                  strokeWeight(2);
+                  textSize(20);
+                  text("X", width / 2 + width / 4, height / 2 - height / 4);
               } else {
+                  fill(51, mappedAlpha);
+                  ellipse(width / 2 + width / 4, height / 2 - height / 4, 50);
+                  fill(255, mappedAlpha);
+                  textAlign(CENTER);
+                  text("X", width / 2 + width / 4, height / 2 - height / 4);
+              }                
+            } else {
+                if (this.hoveredCloseInfo()) {
                   fill(51, mappedAlpha);
                   ellipse(width / 2 + width / 4 + 70, height / 2 - height / 4, 50);
                   fill(255, mappedAlpha);
                   textAlign(CENTER);
-                  text("X", width / 2 + width / 4 + 70, height / 2 - height / 4);
-              }
-          }
+                  strokeWeight(2);
+                  textAlign(CENTER);
+                  text("X", width / 2 + width / 4 + 70, height / 2 - height / 4); 
+                } else {
+                    fill(51, mappedAlpha);
+                    ellipse(width / 2 + width / 4 + 70, height / 2 - height / 4, 50);
+                    fill(255, mappedAlpha);
+                    textAlign(CENTER);
+                    text("X", width / 2 + width / 4 + 70, height / 2 - height / 4);
+                }
+            }
             
         pop();
     }
@@ -583,11 +585,11 @@ class Spaceship {
             // imageMode(CORNERS);
             image(questionMrk, this.Fx, this.Fy, this.F_size, this.F_size);
             if (this.filter_hovered()) {
-                fill(51, 50);
-                noStroke();
-                ellipseMode(CENTER);
-                ellipse(this.Fx + this.F_size / 2, this.Fy + this.F_size / 2, this.F_size);
-              }
+              fill(51, 50);
+              noStroke();
+              ellipseMode(CENTER);
+              ellipse(this.Fx + this.F_size / 2, this.Fy + this.F_size / 2, this.F_size);
+            }
             // rectMode(CORNERS);
             // rect(this.Fx, this.Fy, this.F_size, this.F_size);
 

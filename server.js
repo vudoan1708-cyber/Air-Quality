@@ -48,16 +48,17 @@ app.post("/submission", (sub_request, sub_response) => { // receive the sent dat
     sub_data.timestamp = timestamp; // put the logged time to the currently made data variable
     submission_database.insert(sub_data);  // insert all the data into an array called submission_database
     console.log(submission_database);
-    submission_database.find({}, (err) => {
+    submission_database.find({}, (err, data) => {
         if (err) {
             sub_response.end();
             return;
         } else {
-            sub_response.json({ // respond it back to the client
-                status: "success",
-                timestamp: timestamp,
-                pollutant: sub_data.pollutants
-            });
+            // sub_response.json({ // respond it back to the client
+            //     status: "success",
+            //     timestamp: timestamp,
+            //     pollutant: sub_data.pollutants
+            // });
+            sub_response.json(data);
         }
         
     })
