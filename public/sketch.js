@@ -1223,29 +1223,28 @@ async function userSubmission() {
 
         console.log(sub_json);
       
-        for (let i = 0; i < sub_json.length; i++) { // loop through database
-            totalSub = sub_json.length; // get total submission counts
-            for (let j = 0; j < sub_json[i].pollutants.length; j++) {
-              if (!reSize) { // if not submitted
-                if (sub_json[i].pollutants[j] == "CO") COCnt++; // increment up to the variables that have the corresponding pollutant types
-                else if (sub_json[i].pollutants[j] == "O3") O3Cnt++;
-                else if (sub_json[i].pollutants[j] == "SO2") SO2Cnt++;
-                else if (sub_json[i].pollutants[j] == "NO2") NO2Cnt++;
-                else if (sub_json[i].pollutants[j] == "PM10") PM10Cnt++;
-                else if (sub_json[i].pollutants[j] == "PM2.5") PM25Cnt++;
-              } else {
-                  if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "CO") COCnt++; // not going through the entire database to add everything again, but to find the latest log to add up
-                  else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "O3") O3Cnt++;
-                  else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "SO2") SO2Cnt++;
-                  else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "NO2") NO2Cnt++;
-                  else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "PM10") PM10Cnt++;
-                  else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "PM2.5") PM25Cnt++;
+        if (!reSize) { // if not submitted
+            for (let i = 0; i < sub_json.length; i++) { // loop through database
+              for (let j = 0; j < sub_json[i].pollutants.length; j++) {        
+                  if (sub_json[i].pollutants[j] == "CO") COCnt++; // increment up the variables that have the corresponding pollutant types to the current number of submissions
+                  else if (sub_json[i].pollutants[j] == "O3") O3Cnt++;
+                  else if (sub_json[i].pollutants[j] == "SO2") SO2Cnt++;
+                  else if (sub_json[i].pollutants[j] == "NO2") NO2Cnt++;
+                  else if (sub_json[i].pollutants[j] == "PM10") PM10Cnt++;
+                  else if (sub_json[i].pollutants[j] == "PM2.5") PM25Cnt++;
                 
               }
-              
             }
-        }
-        reSize = true;
+        } else {
+                if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "CO") COCnt++; // not going through the entire database to add everything again, but to find the latest log to add up
+                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "O3") O3Cnt++;
+                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "SO2") SO2Cnt++;
+                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "NO2") NO2Cnt++;
+                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "PM10") PM10Cnt++;
+                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "PM2.5") PM25Cnt++;
+            }
+            totalSub = sub_json.length; // get total submission counts
+            reSize = true;
     }
 }
 
