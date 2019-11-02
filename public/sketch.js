@@ -9,7 +9,6 @@ let spaceship;
 let loading = true; // loading screen 
 let mapEntered = false; // for mobile detection
 let getLocation = false; // trigger geolocation
-let waitMessage = false; // wait time before a location is marked
 let movingForward = false; // for kepping track of the spaceship-like button movement
 let movingBackward = false; // for kepping track of the spaceship-like button movement
 let infoBtn_clicked = false; // information btn
@@ -27,8 +26,6 @@ let menuDropped = false;
 let pollutant_menuDropped = false;
 let reSize = false; // for responding to the logged data
 
-let mediaCounter = 0;
-let numOfMedia = 3;
 let frames = 160;
 
 let btn_activated = 1; // for keeping track of the appearance of all the tabs, buttons...
@@ -37,6 +34,7 @@ let timeCount = 0; // time count till the submitted notification disappear
 let yearsSelection = 1; // for keeping track of selected years
 let pollutantSelection = 0;
 let angle = 0; // for visualising the data
+let waitMessage = 0; // wait time before a location is marked
 
 // let subCount = 0; // for counting submitting time
 let animTime = 0; // for animation
@@ -276,24 +274,42 @@ function draw() {
             clear(); // transparent background
             airVisualisation();
             
-            mappedAlpha = map(animTime, 0, 15, 255, 0);
-            if (waitMessage) { // wait message before geolocation starts
-                if (animTime <= 14) {
+            mappedAlpha = map(animTime, 0, 15, 255, 0); // for animation with alpha
+            if (waitMessage == 1) { // wait message before geolocation starts
+                if (animTime <= 14) { 
                   animTime++;
                 } else {
                   animTime = 0;
-                  waitMessage = false;
+                  waitMessage = 0;
                 }
                 push();
                   fill(0, mappedAlpha);
+                  noStroke();
                   rectMode(CENTER);
-                  rect(width / 2, height / 2, 200, 50);
+                  rect(width / 2, height / 2, 250, 100);
                   fill(255, mappedAlpha);
                   textAlign(CENTER);
                   textSize(20);
                   text("Just a sec...", width / 2 + 10, height / 2 + 40, 200, 100);
                 pop();
               } 
+          
+            if (waitMessage == 2) {
+              if (animTime < 15) animTime++;
+              else {
+                animTime = 0;
+                waitMessage = 0; 
+              }
+                push();
+                  fill(0, mappedAlpha);
+                  noStroke();
+                  rectMode(CENTER);
+                  rect(width / 2, height / 2, 250, 100);
+                  fill(255, mappedAlpha);
+                  textAlign(CENTER)
+                  text("YOU COULD BE A HERO OF TOMORROW", width / 2, height / 2, 250, 50);
+                pop();
+            }
         }
     }
 }
@@ -432,7 +448,7 @@ function airVisualisation() {
 
             mappedVal_alpha = map(val, -99, 900, 0, 255); // represents the intensity of pollutants
             if (reSize) {
-                for (let i = 0; i < pollutants.length; i++) {
+                for (let i = 0; i < pollutants.length; i += 0.25) {
                     if (pollutants[i] == "CO") {
                         // if (pollutant == "co") {
                         diameter = sqrt(val) * myMap.zoom() * (0.9 / (i+1.075) * 0.95); // calculate the area of circles relatively to zoom levels
@@ -607,7 +623,10 @@ function displaySpaceship() {
         spaceship.showInfo();
         spaceship.showCloseInfo();
     }
-}
+}  
+
+
+
 
 function drawLegend() {
     legend.show();
@@ -616,11 +635,11 @@ function drawLegend() {
       let x;
       let y;
       if (!mobile) { // if not touchscreen devices
-         x = width - width / 6 + 30;
-         y = height - 25;
+         x = width - 250;
+         y = height - 200;
       } else {
-         x = 20;
-         y = height - 220;
+         x = 0;
+         y = height - 400;
       }
       fill(0, 200);
       if (!mobile) rect(width - 250, height - 200, 250, 200);
@@ -630,16 +649,16 @@ function drawLegend() {
       else textSize(10);
   
       if (reSize) { // if all the ellipses are resized, show all the texts
-        text("Total Number of Submissions  " + totalSub, x, y - 150, 250, 50);
-        text("Votes for CO  " + COCnt, x, y - 125, 150, 50);
-        text("Votes for O3  " + O3Cnt, x, y - 100, 150, 50);
-        text("Votes for NO2  " + NO2Cnt, x, y - 75, 150, 50);
-        text("Votes for SO2  " + SO2Cnt, x, y - 50, 150, 50);
-        text("Votes for PM10  " + PM10Cnt, x, y - 25, 150, 50);
-        text("Votes for PM2.5  " + PM25Cnt, x, y, 150, 50);
+        text("Total Votes For A Brighter Day  " + totalSub, x + 10, y + 25, 250, 50);
+        text("Votes for CO  " + COCnt, x + 10, y + 50, 150, 50);
+        text("Votes for O3  " + O3Cnt, x + 10, y + 75, 150, 50);
+        text("Votes for NO2  " + NO2Cnt, x + 10, y + 100, 150, 50);
+        text("Votes for SO2  " + SO2Cnt, x + 10, y + 125, 150, 50);
+        text("Votes for PM10  " + PM10Cnt, x + 10, y + 150, 150, 50);
+        text("Votes for PM2.5  " + PM25Cnt, x + 10, y + 175, 150, 50);
       } else { // if not
           textAlign(CENTER);
-          text("Submit Your Thought On \nReducing Pollutants To See Results", x - 20, y - 75, 250, 50); // show this text at the beginning
+          text("Submit Your Thought On \nReducing Pollutants To See Results", x, y + 100, 250, 50); // show this text at the beginning
         }
     pop();
 }
@@ -805,7 +824,7 @@ function touchStarted() {
                 } else if (chosenBx1) { //de-select checkboxes
                     chosenBx1 = false;
                     pollutants.pop(pollutant); // pop out of array
-                } else if (spaceship.hoveredCloseInfo()) {
+                } else if (spaceship.hoveredCloseInfo()) { // if closed
                     pollutants.pop(pollutant); // pop out of array
                 }
             }
@@ -1210,7 +1229,7 @@ async function userSubmission() {
     if (isSubmitted) {
         isSubmitted = false;
         const data_counts = {pollutants};
-        console.log(pollutants);
+        //console.log(pollutants);
         const sub_options = {
             method: "POST",
             headers: {
@@ -1223,34 +1242,28 @@ async function userSubmission() {
 
         console.log(sub_json);
       
-        if (!reSize) { // if not submitted
-            for (let i = 0; i < sub_json.length; i++) { // loop through database
-              for (let j = 0; j < sub_json[i].pollutants.length; j++) {        
-                  if (sub_json[i].pollutants[j] == "CO") COCnt++; // increment up the variables that have the corresponding pollutant types to the current number of submissions
-                  else if (sub_json[i].pollutants[j] == "O3") O3Cnt++;
-                  else if (sub_json[i].pollutants[j] == "SO2") SO2Cnt++;
-                  else if (sub_json[i].pollutants[j] == "NO2") NO2Cnt++;
-                  else if (sub_json[i].pollutants[j] == "PM10") PM10Cnt++;
-                  else if (sub_json[i].pollutants[j] == "PM2.5") PM25Cnt++;
-                
-              }
-            }
-        } else {
-                if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "CO") COCnt++; // not going through the entire database to add everything again, but to find the latest log to add up
-                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "O3") O3Cnt++;
-                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "SO2") SO2Cnt++;
-                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "NO2") NO2Cnt++;
-                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "PM10") PM10Cnt++;
-                else if (sub_json[sub_json.length - 1].pollutants[sub_json[sub_json.length - 1].pollutants.length - 1] == "PM2.5") PM25Cnt++;
-            }
-            totalSub = sub_json.length; // get total submission counts
-            reSize = true;
+      if (!reSize) { // if not submitted
+        for (let i = 0; i < sub_json.length; i++) { // loop through database
+          for (let j = 0; j < sub_json[i].pollutants.length; j++) {        
+              if (sub_json[i].pollutants[j] == "CO") COCnt++; // increment up to the variables that have the corresponding pollutant types
+              else if (sub_json[i].pollutants[j] == "O3") O3Cnt++;
+              else if (sub_json[i].pollutants[j] == "SO2") SO2Cnt++;
+              else if (sub_json[i].pollutants[j] == "NO2") NO2Cnt++;
+              else if (sub_json[i].pollutants[j] == "PM10") PM10Cnt++;
+              else if (sub_json[i].pollutants[j] == "PM2.5") PM25Cnt++;
+            
+          }
+        }
+      }
+        totalSub = sub_json.length; // get total submission counts
+        reSize = true;
+        waitMessage = 2;
     }
 }
 
 function getUserLocation() {
     if (getLocation) {
-        waitMessage = true;
+        waitMessage = 1;
         // current logged location
         if ('geolocation' in navigator) {
             console.log("geolocation is available");
@@ -1277,6 +1290,7 @@ function getUserLocation() {
                 myMap.map.flyTo([json.latitude, json.longitude], 7.5); // animate perspective to the current logged position,
                 // myMap.map because I'm using mappa.js, not purely leaflet.js, in order to access the base map library (Leaflet)
                 // the map id has to come before .map method
+                
                 // adding marker
                 const popUp = "You're currently here at a latitude of " + json.latitude + " and a longitude of " + json.longitude;
                 const marker = L.marker([json.latitude, json.longitude], {opacity: 0.5})
@@ -1284,11 +1298,7 @@ function getUserLocation() {
                                         .addTo(myMap.map); // myMap.map because I'm using mappa.js, not purely leaflet.js, in order to access the base map library
                                                             // the map id has to come before .map method
                 marker.openPopup();
-                // marker;
                 
-                // marker.map.setLatLng([loglat, loglon]);  
-                // myMap = L.map('mapID').setView([loglat, loglon], 10);
-                // rect(loglat, loglon, 200, 200);
             });
         } else console.log("geolocation is not available");
         getLocation = false; // disable immediately after being triggered on

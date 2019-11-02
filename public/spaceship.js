@@ -72,6 +72,7 @@ class Spaceship {
             noStroke();
             fill(0);
             rect(this.xRect, this.yRect, this.wRect, this.hRect);
+      
             // buttons
             if (this.R_btn_hovered()) {
                 // console.log("HOVERED");
@@ -220,61 +221,63 @@ class Spaceship {
 
             // check boxes
             if (btn_activated > 7) {
-                if (chosenBx1 == true) { // 1
-                    fill(0, 255, 0, 240);
-                    rect(this.cBoxX, this.cBoxY, this.cBox_size, this.cBox_size);
-                } else {
-                    fill(255, 240);
-                    rect(this.cBoxX, this.cBoxY, this.cBox_size, this.cBox_size);
-                }
+                if (!reSize) { // if submit button is not clicked
+                   if (chosenBx1 == true) { // 1
+                      fill(0, 255, 0, 240);
+                      rect(this.cBoxX, this.cBoxY, this.cBox_size, this.cBox_size);
+                  } else {
+                      fill(255, 240);
+                      rect(this.cBoxX, this.cBoxY, this.cBox_size, this.cBox_size);
+                  }
 
-                if (chosenBx2 == true) { // 2
-                    fill(0, 255, 0, 240);
-                    rect(this.cBoxX, this.cBoxY + 20, this.cBox_size, this.cBox_size);
-                } else {
-                    fill(255, 240);
-                    rect(this.cBoxX, this.cBoxY + 20, this.cBox_size, this.cBox_size);
-                }
+                  if (chosenBx2 == true) { // 2
+                      fill(0, 255, 0, 240);
+                      rect(this.cBoxX, this.cBoxY + 20, this.cBox_size, this.cBox_size);
+                  } else {
+                      fill(255, 240);
+                      rect(this.cBoxX, this.cBoxY + 20, this.cBox_size, this.cBox_size);
+                  }
 
-                if (chosenBx3 == true) { // 3
-                    fill(0, 255, 0, 240);
-                    rect(this.cBoxX, this.cBoxY + 40, this.cBox_size, this.cBox_size);
-                } else {
-                    fill(255, 240);
-                    rect(this.cBoxX, this.cBoxY + 40, this.cBox_size, this.cBox_size);
-                }
+                  if (chosenBx3 == true) { // 3
+                      fill(0, 255, 0, 240);
+                      rect(this.cBoxX, this.cBoxY + 40, this.cBox_size, this.cBox_size);
+                  } else {
+                      fill(255, 240);
+                      rect(this.cBoxX, this.cBoxY + 40, this.cBox_size, this.cBox_size);
+                  }
 
-                if (chosenBx4 == true) { // 4
-                    fill(0, 255, 0, 240);
-                    rect(this.cBoxX, this.cBoxY + 60, this.cBox_size, this.cBox_size);
-                } else {
-                    fill(255, 240);
-                    rect(this.cBoxX, this.cBoxY + 60, this.cBox_size, this.cBox_size);
-                }
+                  if (chosenBx4 == true) { // 4
+                      fill(0, 255, 0, 240);
+                      rect(this.cBoxX, this.cBoxY + 60, this.cBox_size, this.cBox_size);
+                  } else {
+                      fill(255, 240);
+                      rect(this.cBoxX, this.cBoxY + 60, this.cBox_size, this.cBox_size);
+                  }
 
-                if (chosenBx5 == true) { // 5
-                    fill(0, 255, 0, 240);
-                    rect(this.cBoxX, this.cBoxY + 80, this.cBox_size, this.cBox_size);
-                } else {
-                    fill(255, 240);
-                    rect(this.cBoxX, this.cBoxY + 80, this.cBox_size, this.cBox_size);
-                }
+                  if (chosenBx5 == true) { // 5
+                      fill(0, 255, 0, 240);
+                      rect(this.cBoxX, this.cBoxY + 80, this.cBox_size, this.cBox_size);
+                  } else {
+                      fill(255, 240);
+                      rect(this.cBoxX, this.cBoxY + 80, this.cBox_size, this.cBox_size);
+                  }
 
-                if (chosenBx6 == true) { // 6
-                    fill(0, 255, 0, 240);
-                    rect(this.cBoxX, this.cBoxY + 100, this.cBox_size, this.cBox_size);
-                } else {
-                    fill(255, 240);
-                    rect(this.cBoxX, this.cBoxY + 100, this.cBox_size, this.cBox_size);
-                }
+                  if (chosenBx6 == true) { // 6
+                      fill(0, 255, 0, 240);
+                      rect(this.cBoxX, this.cBoxY + 100, this.cBox_size, this.cBox_size);
+                  } else {
+                      fill(255, 240);
+                      rect(this.cBoxX, this.cBoxY + 100, this.cBox_size, this.cBox_size);
+                  }
 
-                // submit button
-                if (chosenBx1 || chosenBx2 || chosenBx3 || chosenBx4 ||
-                    chosenBx5 || chosenBx6) { // if one or more checkboxes are chosen, then fill grey
-                        fill(51);
-                    } else fill(51, 100); // else turn down the alpha
-                    if (!mobile) rect(this.submitX, this.submitY, this.submitW, this.submitH);
-                    else rect(this.submitX - 100, this.submitY - 20, this.submitW, this.submitH);
+                  // submit button
+                  if (chosenBx1 || chosenBx2 || chosenBx3 || chosenBx4 ||
+                      chosenBx5 || chosenBx6) { // if one or more checkboxes are chosen, then fill grey
+                          fill(51);
+                      } else fill(51, 100); // else turn down the alpha
+                      if (!mobile) rect(this.submitX, this.submitY, this.submitW, this.submitH);
+                      else rect(this.submitX - 100, this.submitY - 20, this.submitW, this.submitH); 
+                }
             }
 
             
@@ -390,22 +393,24 @@ class Spaceship {
                     textAlign(RIGHT);
                     text(aboutText[9], width / 4 - 12, 320 - height / 4);
                 } else if (btn_activated == 8) {
-                    text(submitText[0], 50 - width / 4, 120 - height / 4);
-                    text(submitText[1], 100 - width / 4, 170 - height / 4);
-                    text(submitText[2], 100 - width / 4, 190 - height / 4);
-                    text(submitText[3], 100 - width / 4, 210 - height / 4);
-                    text(submitText[4], 100 - width / 4, 230 - height / 4);
-                    text(submitText[5], 100 - width / 4, 250 - height / 4);
-                    text(submitText[6], 100 - width / 4, 270 - height / 4);  
-                    
-                    //submit text
-                    if (chosenBx1 || chosenBx2 || chosenBx3 || chosenBx4 ||
-                        chosenBx5 || chosenBx6) { // if one or more checkboxes are chosen, then fill white
-                        if (this.submit_hovered()) textSize(15);
-                            fill(255);
-                        } else fill(51); // else grey out the text
-                    textAlign(CENTER);
-                    text("SUBMIT", this.submitX, this.submitY);                
+                    if (!reSize) { // submit button is not clicked yet
+                      text(submitText[0], 50 - width / 4, 120 - height / 4);
+                      text(submitText[1], 100 - width / 4, 170 - height / 4);
+                      text(submitText[2], 100 - width / 4, 190 - height / 4);
+                      text(submitText[3], 100 - width / 4, 210 - height / 4);
+                      text(submitText[4], 100 - width / 4, 230 - height / 4);
+                      text(submitText[5], 100 - width / 4, 250 - height / 4);
+                      text(submitText[6], 100 - width / 4, 270 - height / 4);  
+
+                      //submit text
+                      if (chosenBx1 || chosenBx2 || chosenBx3 || chosenBx4 ||
+                          chosenBx5 || chosenBx6) { // if one or more checkboxes are chosen, then fill white
+                          if (this.submit_hovered()) textSize(15);
+                              fill(255);
+                          } else fill(51); // else grey out the text
+                      textAlign(CENTER);
+                      text("SUBMIT", this.submitX, this.submitY); 
+                    } else text("THANK YOU FOR YOUR CONSIDERATIONS", 0, 0, 250, 50);            
                 }
             } else { // if it is touch screen devices
                 if (btn_activated == 1) {
@@ -512,22 +517,24 @@ class Spaceship {
                     textAlign(RIGHT);
                     text(aboutText[9], width / 4 + 60, 320 - height / 4);
                 } else if (btn_activated == 8) {
-                    text(submitText[0], width / 4 - 200, 120 - height / 4);
-                    text(submitText[1], 100 - width / 4, 170 - height / 4);
-                    text(submitText[2], 100 - width / 4, 190 - height / 4);
-                    text(submitText[3], 100 - width / 4, 210 - height / 4);
-                    text(submitText[4], 100 - width / 4, 230 - height / 4);
-                    text(submitText[5], 100 - width / 4, 250 - height / 4);
-                    text(submitText[6], 100 - width / 4, 270 - height / 4);  
-                    
-                    //submit text
-                    if (chosenBx1 || chosenBx2 || chosenBx3 || chosenBx4 ||
-                        chosenBx5 || chosenBx6) { // if one or more checkboxes are chosen, then fill white
-                            if (this.submit_hovered()) textSize(15);
-                            fill(255);
-                        } else fill(51); // else grey out the text
-                    textAlign(CENTER);   
-                    text("SUBMIT", this.submitX - 100, this.submitY - 20);      
+                    if (!reSize) { // submit button is not clicked yet
+                      text(submitText[0], 50 - width / 4, 120 - height / 4);
+                      text(submitText[1], 100 - width / 4, 170 - height / 4);
+                      text(submitText[2], 100 - width / 4, 190 - height / 4);
+                      text(submitText[3], 100 - width / 4, 210 - height / 4);
+                      text(submitText[4], 100 - width / 4, 230 - height / 4);
+                      text(submitText[5], 100 - width / 4, 250 - height / 4);
+                      text(submitText[6], 100 - width / 4, 270 - height / 4);  
+
+                      //submit text
+                      if (chosenBx1 || chosenBx2 || chosenBx3 || chosenBx4 ||
+                          chosenBx5 || chosenBx6) { // if one or more checkboxes are chosen, then fill white
+                          if (this.submit_hovered()) textSize(15);
+                              fill(255);
+                          } else fill(51); // else grey out the text
+                      textAlign(CENTER);
+                      text("SUBMIT", this.submitX, this.submitY); 
+                    } else text("THANK YOU FOR YOUR CONSIDERATION", 0, 0, 250, 50);      
                 }
             }
             
