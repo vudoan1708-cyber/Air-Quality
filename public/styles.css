@@ -7,6 +7,10 @@
   box-sizing: border-box;
 }
 
+html {
+	font-size: 20px;
+}
+
 body {
   /* background-size: cover; */
   -webkit-box-align: center;
@@ -21,9 +25,60 @@ body {
       -ms-overflow: hidden;
 }
 
+body #form {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	margin: auto;
+	z-index: 1000000;
+}
+
+body #form #limitInput {
+	float: left;
+	opacity: 0.70;
+	font-size: 1rem;
+	border-radius: 10px;
+}
+
+body #form #search {
+	position: relative;
+	clear: left;
+	padding: 10px;
+	margin: auto;
+	width: 50%;
+	text-align: center;
+	cursor: pointer;
+	background-color: blue;
+	border-radius: 10px;
+	color: white;
+}
+
 canvas {
   display: block;
   width: 100%;
   height: 100%;
 }
-/*# sourceMappingURL=styles.css.map */
+
+@media only screen and (max-width: 600px) {
+	html {
+		font-size: 3vw;
+	}
+
+	body #form {
+		left: 75%;
+	}
+
+	body #form #search {
+		position: relative;
+		clear: left;
+		padding: 10px;
+		margin: auto;
+		width: 50%;
+		text-align: center;
+		cursor: pointer;
+		background-color: blue;
+		border-radius: 10px;
+		color: white;
+	}	
+}

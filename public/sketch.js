@@ -31,7 +31,7 @@ let frames = 160;
 let btn_activated = 1; // for keeping track of the appearance of all the tabs, buttons...
 let clickCnt = 0;   // for keeping track of number of time the menu button (spaceship) is pressed
 let timeCount = 0; // time count till the submitted notification disappear
-let yearsSelection = 1; // for keeping track of selected years
+let yearsSelection = 4; // for keeping track of selected years
 let pollutantSelection = 0;
 let angle = 0; // for visualising the data
 let waitMessage = 0; // wait time before a location is marked
@@ -189,15 +189,6 @@ let questionMrk;
 let earthImg;
 
 
-// function MediaLoader() {
-//     mediaCounter++;
-//     if (mediaCounter == numOfMedia) {
-//         if (loading < 2) {
-//             loading++;
-//         }
-//     }
-// }
-
 function preload() {
     //     airData = loadJSON('json/aq.json');
     countries = loadJSON('json/countries/countries.json');
@@ -225,7 +216,11 @@ function setup() {
     textFont("Georgia");
 
     clear(); // transparent background
-    getAQ()
+    init(null);
+}
+
+function init(limit_input) {
+    getAQ(limit_input)
         .then(aq => {
             airData = aq;
             loading = false;
@@ -233,7 +228,6 @@ function setup() {
         .catch(err => {
             console.log(err);
         });
-
 }
 
 function draw() {
@@ -360,7 +354,7 @@ function airVisualisation() {
     for (let i = 0; i < airData.results.length; i++) { // loop through every index of result 
         for (let p = 0; p < airData.results[i].measurements.length; p++) { // loop through the measurement section in every result
             country = airData.results[i].country.toLowerCase(); // check each country
-            city = airData.results[i].city; // check each country
+            city = airData.results[i].city; // check each city
             pollutant = airData.results[i].measurements[p].parameter; // check all pollutants in each country
             val = Number(airData.results[i].measurements[p].value); // check their values
             unit = airData.results[i].measurements[p].unit; // check their units
@@ -390,6 +384,14 @@ function airVisualisation() {
                     latlon = countries[country];
                 } else {
                     country = "Handsome Girl";
+                    latlon = countries[country];
+                }
+            } else if (yearsSelection == 4) { // same logic
+              if (years[0] == "2020") {
+                    country = country;
+                    latlon = countries[country];
+                } else {
+                    country = "eel";
                     latlon = countries[country];
                 }
             } else latlon = countries[country]; // if it's 0, then show everything
@@ -447,30 +449,7 @@ function airVisualisation() {
             } else latlon = countries[country];
 
             mappedVal_alpha = map(val, -99, 900, 0, 255); // represents the intensity of pollutants
-            if (reSize) {
-                for (let i = 0; i < pollutants.length; i += 0.25) {
-                    if (pollutants[i] == "CO") {
-                        // if (pollutant == "co") {
-                        diameter = sqrt(val) * myMap.zoom() * (0.9 / (i+1.075) * 0.95); // calculate the area of circles relatively to zoom levels
-                    }
-                    if (pollutants[i] == "O3") {
-                        diameter = sqrt(val) * myMap.zoom() * (0.9 / (i+1.05) * 0.95); // calculate the area of circles relatively to zoom levels
-                    }
-                    if (pollutants[i] == "SO2") {
-                        diameter = sqrt(val) * myMap.zoom() * (0.9 / (i+1.025) * 0.95); // calculate the area of circles relatively to zoom levels
-                    }
-                    if (pollutants[i] == "NO2") {
-                        diameter = sqrt(val) * myMap.zoom() * (0.9 / (i+1.025) * 0.95); // calculate the area of circles relatively to zoom levels
-                    }
-                    if (pollutants[i] == "PM10") {
-                        diameter = sqrt(val) * myMap.zoom() * (0.9 / (i+1) * 0.95); // calculate the area of circles relatively to zoom levels
-                    }
-                    if (pollutants[i] == "PM2.5") {
-                        diameter = sqrt(val) * myMap.zoom() * (0.9 / (i+1) * 0.95); // calculate the area of circles relatively to zoom levels
-                    };
-                }
-                // reSize = false;
-            } else if (!isSubmitted) diameter = sqrt(val) * myMap.zoom();
+            if (!isSubmitted) diameter = sqrt(val) * myMap.zoom();
 
             if (latlon) { // to check if the information is undefined or not
                 let lat = latlon[0];
@@ -514,48 +493,6 @@ function airVisualisation() {
                         vertex(pos.x + dx, pos.y + dy);
                         // line(pos.x, pos.y, pos.x + dx, pos.y + dy);
                     endShape(CLOSE);
-
-                    // let angle = 0;
-                    // beginShape();
-                    // translate(pos.x, pos.y);
-                    // for (let i = 0; i < 360; i += 26) {
-                        
-                    //     let x = cos(i) * diameter;
-                    //     let y = sin(i) * diameter;
-                    //     // if (val < 100) {
-                    //     //   strokeWeight(1);
-                    //     // } else strokeWeight(3);
-                    //     // vertex(x, y);
-                    //     rotate(angle);
-                    //     line(0, 0, x, y);
-                    //     angle += 0.01;
-                        
-                    // }
-                    // endShape(CLOSE);
-                    
-                   
-                    // let n = 6;
-                    // let de = 71;                   
-                    // strokeWeight(1);
-                    // beginShape();
-                    //     for (let i = 0; i < 360; i++) {
-                    //     let k = i * de;
-                    //     let r = sin(n*k) * diameter;
-                    //     let x = cos(k) * r;
-                    //     let y = sin(k) * r;
-                    //     vertex(x + pos.x, y + pos.y);
-                    //     }
-                    // endShape(CLOSE);
-                    
-
-                    // for (let a = 0; a <= 360; a++) {
-                    //     let dx = cos(a) * diameter / 2;
-                    //     let dy = sin(a) * diameter / 2;
-                    //     beginShape();
-                    //         strokeWeight(2);
-                    //         vertex(pos.x + dx, pos.y + dy);
-                    //     endShape(CLOSE);
-                    // }
                 pop();
                 if (d < diameter / 2) {
                     // console.log("HOVERED");
@@ -671,7 +608,6 @@ function touchStarted() {
             if (d < 200) {
                 mapEntered = true;
                 mobile = true;
-                console.log("PHONE/IPAD");
             }
         }
         
@@ -682,7 +618,6 @@ function touchStarted() {
         if (spaceship.clicked()) {
             clickCnt++;
             filterMode = false;
-            // console.log(clickCnt);
         }
 
         // if spaceship is clicked once, it moves forwards
@@ -744,6 +679,9 @@ function touchStarted() {
                     yearsSelection = 3;
                     menuDropped = false;
                     // console.log("3rd");
+                } else if (spaceship.year_fourth_section_hovered()) {
+                    yearsSelection = 4;
+                    menuDropped = false;
                 } else if (spaceship.year_the_all_section_hovered()) {
                     yearsSelection = 0;
                     menuDropped = false;
@@ -1016,6 +954,9 @@ function mousePressed() {
                     yearsSelection = 3;
                     menuDropped = false;
                     // console.log("3rd");
+                } else if (spaceship.year_fourth_section_hovered()) {
+                    yearsSelection = 4;
+                    menuDropped = false;
                 } else if (spaceship.year_the_all_section_hovered()) {
                     yearsSelection = 0;
                     menuDropped = false;
@@ -1207,15 +1148,9 @@ function mousePressed() {
     }
 }
 
-// function keyPressed() {
-//     if (key == "1") {
-//         reSize = 1;
-//         console.log("1");
-//     } 
-// }
+async function getAQ(limit_search) { // fetching api from openaq.org
 
-async function getAQ() { // fetching api from openaq.org
-    const limit_search = "1000";
+    if (limit_search == null) limit_search = "990";
     const url = `https://api.openaq.org/v1/latest?limit=${limit_search}`;
     const response = await fetch(url);
     airData = await response.json();
@@ -1239,8 +1174,6 @@ async function userSubmission() {
         };
         const sub_response = await fetch("/submission", sub_options); // sending to server
         const sub_json = await sub_response.json(); // make the response from server into an object
-
-        console.log(sub_json);
       
       if (!reSize) { // if not submitted
         for (let i = 0; i < sub_json.length; i++) { // loop through database
@@ -1290,7 +1223,6 @@ function getUserLocation() {
                 myMap.map.flyTo([json.latitude, json.longitude], 7.5); // animate perspective to the current logged position,
                 // myMap.map because I'm using mappa.js, not purely leaflet.js, in order to access the base map library (Leaflet)
                 // the map id has to come before .map method
-                
                 // adding marker
                 const popUp = "You're currently here at a latitude of " + json.latitude + " and a longitude of " + json.longitude;
                 const marker = L.marker([json.latitude, json.longitude], {opacity: 0.5})
@@ -1298,7 +1230,11 @@ function getUserLocation() {
                                         .addTo(myMap.map); // myMap.map because I'm using mappa.js, not purely leaflet.js, in order to access the base map library
                                                             // the map id has to come before .map method
                 marker.openPopup();
+                // marker;
                 
+                // marker.map.setLatLng([loglat, loglon]);  
+                // myMap = L.map('mapID').setView([loglat, loglon], 10);
+                // rect(loglat, loglon, 200, 200);
             });
         } else console.log("geolocation is not available");
         getLocation = false; // disable immediately after being triggered on

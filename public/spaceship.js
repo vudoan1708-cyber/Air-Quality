@@ -276,7 +276,7 @@ class Spaceship {
                           fill(51);
                       } else fill(51, 100); // else turn down the alpha
                       if (!mobile) rect(this.submitX, this.submitY, this.submitW, this.submitH);
-                      else rect(this.submitX - 100, this.submitY - 20, this.submitW, this.submitH); 
+                      else rect(this.submitX - 120, this.submitY - 20, this.submitW - 20, this.submitH - 20); 
                 }
             }
 
@@ -518,7 +518,7 @@ class Spaceship {
                     text(aboutText[9], width / 4 + 60, 320 - height / 4);
                 } else if (btn_activated == 8) {
                     if (!reSize) { // submit button is not clicked yet
-                      text(submitText[0], 50 - width / 4, 120 - height / 4);
+                      text(submitText[0], width / 4 - 200, 120 - height / 4);
                       text(submitText[1], 100 - width / 4, 170 - height / 4);
                       text(submitText[2], 100 - width / 4, 190 - height / 4);
                       text(submitText[3], 100 - width / 4, 210 - height / 4);
@@ -533,8 +533,8 @@ class Spaceship {
                               fill(255);
                           } else fill(51); // else grey out the text
                       textAlign(CENTER);
-                      text("SUBMIT", this.submitX, this.submitY); 
-                    } else text("THANK YOU FOR YOUR CONSIDERATION", 0, 0, 250, 50);      
+                      text("SUBMIT", this.submitX - 120, this.submitY - 20); 
+                    } else text("THANK YOU FOR YOUR CONSIDERATION", 60, 0, 250, 50);      
                 }
             }
             
@@ -622,6 +622,8 @@ class Spaceship {
                     text("2018", this.Fx - 43, this.Fy + 70); // text inside drop down menu
                 } else if (yearsSelection == 3) {
                     text("2017", this.Fx - 43, this.Fy + 70); // text inside drop down menu
+                } else if (yearsSelection == 4) {
+                    text("2020", this.Fx - 43, this.Fy + 70);
                 } else text("YEAR", this.Fx - 43, this.Fy + 70); // text inside drop down menu
 
                 if (pollutantSelection == 1) {
@@ -644,13 +646,15 @@ class Spaceship {
                     rect(this.Fx - 80, this.Fy + this.F_size + 35, this.F_size + 30, 40); // first section
                     rect(this.Fx - 80, this.Fy + this.F_size + 75, this.F_size + 30, 40); // second section
                     rect(this.Fx - 80, this.Fy + this.F_size + 115, this.F_size + 30, 40); // third section
-                    rect(this.Fx - 80, this.Fy + this.F_size + 155, this.F_size + 30, 40); // "all" section
+                    rect(this.Fx - 80, this.Fy + this.F_size + 155, this.F_size + 30, 40); // fourth section
+                    rect(this.Fx - 80, this.Fy + this.F_size + 195, this.F_size + 30, 40); // "all" section
 
                     fill(51);
-                    text("2019", this.Fx - 45, this.Fy + this.F_size + 60); // text in the first section
-                    text("2018", this.Fx - 45, this.Fy + this.F_size + 100); // text in the second section
-                    text("2017", this.Fx - 45, this.Fy + this.F_size + 140); // text in the third section
-                    text("All", this.Fx - 45, this.Fy + this.F_size + 180); // text in the "all" section
+                    text("2020", this.Fx - 45, this.Fy + this.F_size + 60); // text in the first section
+                    text("2019", this.Fx - 45, this.Fy + this.F_size + 100); // text in the second section
+                    text("2018", this.Fx - 45, this.Fy + this.F_size + 140); // text in the third section
+                    text("2017", this.Fx - 45, this.Fy + this.F_size + 180); // text in the fourth section
+                    text("All", this.Fx - 45, this.Fy + this.F_size + 220); // text in the "all" section
                 }
                 if (pollutant_menuDropped) {
                     fill(255, 200);
@@ -757,7 +761,7 @@ class Spaceship {
     // first section
     year_first_section_hovered() {
         if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
-            if (mouseY <  (this.F_size + 35) + 40 && mouseY > this.F_size + 35) {
+            if (mouseY <  (this.F_size + 75) + 40 && mouseY > this.F_size + 75) {
                 return true;
             }
         } else return false;
@@ -765,7 +769,7 @@ class Spaceship {
     // second section
     year_second_section_hovered() {
         if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
-            if (mouseY <  (this.F_size + 75) + 40 && mouseY > this.F_size + 75) {
+            if (mouseY <  (this.F_size + 115) + 40 && mouseY > this.F_size + 115) {
                 return true;
             }
         } else return false;
@@ -773,15 +777,23 @@ class Spaceship {
     // third section
     year_third_section_hovered() {
         if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
-            if (mouseY <  (this.F_size + 115) + 40 && mouseY > this.F_size + 115) {
+            if (mouseY <  (this.F_size + 155) + 40 && mouseY > this.F_size + 155) {
                 return true;
             }
         } else return false;
     }
+    // first section (2020)
+    year_fourth_section_hovered() { 
+      if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
+              if (mouseY <  (this.F_size + 35) + 40 && mouseY > this.F_size + 35) {
+                  return true;
+              }
+          } else return false;
+    }
     // the all section
     year_the_all_section_hovered() {
         if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
-            if (mouseY <  (this.F_size + 155) + 40 && mouseY > this.F_size + 155) {
+            if (mouseY <  (this.F_size + 195) + 40 && mouseY > this.F_size + 195) {
                 return true;
             }
         } else return false;
