@@ -44,3 +44,4 @@
 {"pollutants":["SO2","PM10","PM2.5"],"timestamp":1591230097316,"_id":"wv34PO8l8TDVNoqX"}
 {"pollutants":["CO","O3"],"timestamp":1591230422649,"_id":"G7vWzyg0G1dbxanl"}
 {"pollutants":["CO","O3"],"timestamp":1591230483412,"_id":"xH9qvWqUCixZoE8O"}
+{"pollutants":["PM2.5","NO2"],"timestamp":1591230783470,"_id":"4aLkg4tC16D1vC6c"}

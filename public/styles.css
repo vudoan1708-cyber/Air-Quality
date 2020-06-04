@@ -52,6 +52,14 @@ body #form #search {
 	background-color: blue;
 	border-radius: 10px;
 	color: white;
+	transition: 0.25s ease-in-out;
+	-webkit-transition: 0.25s ease-in-out;
+      -moz-transition: 0.25s ease-in-out;
+      -ms-transition: 0.25s ease-in-out;
+}
+
+body #form #search:hover {
+	background-color: lightblue;
 }
 
 canvas {
