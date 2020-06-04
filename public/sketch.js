@@ -12,7 +12,13 @@ let getLocation = false; // trigger geolocation
 let movingForward = false; // for kepping track of the spaceship-like button movement
 let movingBackward = false; // for kepping track of the spaceship-like button movement
 let infoBtn_clicked = false; // information btn
-let mobile = false; // for mobile
+let mobile = false, // for mobile
+    COChanged = false, // change properties
+    O3Changed = false,
+    SO2Changed = false,
+    NO2Changed = false,
+    PM10Changed = false,
+    PM2Changed = false;
 
 let chosenBx1 = false;
 let chosenBx2 = false;
@@ -551,10 +557,6 @@ function displaySpaceship() {
         }
     }
 
-    // if (spaceship.filter_hovered()) {
-    //     console.log("QUESTION HOVERED");
-    // }
-
     // "more information button" hovered
     if (infoBtn_clicked) {
         spaceship.showInfo();
@@ -571,21 +573,21 @@ function drawLegend() {
     push();
       let x;
       let y;
+      fill(0, 200);
       if (!mobile) { // if not touchscreen devices
          x = width - 250;
          y = height - 200;
+         rect(width - 250, height - 200, 250, 200);
+         textSize(15);
       } else {
          x = 0;
          y = height - 400;
+         rect(0, height - 400, 250, 200);
+         textSize(10);
       }
-      fill(0, 200);
-      if (!mobile) rect(width - 250, height - 200, 250, 200);
-      else rect(0, height - 400, 250, 200);
+      
       fill(255);
-      if (!mobile) textSize(15);
-      else textSize(10);
-  
-      if (reSize) { // if all the ellipses are resized, show all the texts
+      if (reSize) { // if user submits the form, show all the texts
         text("Total Votes For A Brighter Day  " + totalSub, x + 10, y + 25, 250, 50);
         text("Votes for CO  " + COCnt, x + 10, y + 50, 150, 50);
         text("Votes for O3  " + O3Cnt, x + 10, y + 75, 150, 50);
@@ -593,6 +595,30 @@ function drawLegend() {
         text("Votes for SO2  " + SO2Cnt, x + 10, y + 125, 150, 50);
         text("Votes for PM10  " + PM10Cnt, x + 10, y + 150, 150, 50);
         text("Votes for PM2.5  " + PM25Cnt, x + 10, y + 175, 150, 50);
+        if (COChanged) {
+            fill(0, 255, 0, 200);
+            text("Votes for CO  " + COCnt, x + 10, y + 50, 150, 50);
+        }
+        if (O3Changed) {
+            fill(0, 255, 0, 200);
+            text("Votes for O3  " + O3Cnt, x + 10, y + 75, 150, 50);
+        }
+        if (NO2Changed) {
+            fill(0, 255, 0, 200);
+            text("Votes for NO2  " + NO2Cnt, x + 10, y + 100, 150, 50);
+        }
+        if (SO2Changed) {
+            fill(0, 255, 0, 200);
+            text("Votes for SO2  " + SO2Cnt, x + 10, y + 125, 150, 50);
+        }
+        if (PM10Changed) {
+            fill(0, 255, 0, 200);
+            text("Votes for PM10  " + PM10Cnt, x + 10, y + 150, 150, 50);
+        }
+        if (PM2Changed) {
+            fill(0, 255, 0, 200);
+            text("Votes for PM2.5  " + PM25Cnt, x + 10, y + 175, 150, 50);
+        }
       } else { // if not
           textAlign(CENTER);
           text("Submit Your Thought On \nReducing Pollutants To See Results", x, y + 100, 250, 50); // show this text at the beginning
@@ -1155,7 +1181,6 @@ async function getAQ(limit_search) { // fetching api from openaq.org
     const response = await fetch(url);
     airData = await response.json();
 
-    // console.log(airData);
     return airData;
 }
 
@@ -1164,7 +1189,7 @@ async function userSubmission() {
     if (isSubmitted) {
         isSubmitted = false;
         const data_counts = {pollutants};
-        //console.log(pollutants);
+        
         const sub_options = {
             method: "POST",
             headers: {
@@ -1174,20 +1199,38 @@ async function userSubmission() {
         };
         const sub_response = await fetch("/submission", sub_options); // sending to server
         const sub_json = await sub_response.json(); // make the response from server into an object
-      
-      if (!reSize) { // if not submitted
-        for (let i = 0; i < sub_json.length; i++) { // loop through database
-          for (let j = 0; j < sub_json[i].pollutants.length; j++) {        
-              if (sub_json[i].pollutants[j] == "CO") COCnt++; // increment up to the variables that have the corresponding pollutant types
-              else if (sub_json[i].pollutants[j] == "O3") O3Cnt++;
-              else if (sub_json[i].pollutants[j] == "SO2") SO2Cnt++;
-              else if (sub_json[i].pollutants[j] == "NO2") NO2Cnt++;
-              else if (sub_json[i].pollutants[j] == "PM10") PM10Cnt++;
-              else if (sub_json[i].pollutants[j] == "PM2.5") PM25Cnt++;
-            
-          }
+        
+        if (!reSize) { // if not submitted
+            for (let i = 0; i < sub_json.length; i++) { // loop through database
+                for (let j = 0; j < sub_json[i].pollutants.length; j++) {        
+                    if (sub_json[i].pollutants[j] == "CO") {
+                        // increment up to the variables that have the corresponding pollutant types
+                            COCnt++;
+                            if (i == sub_json.length - 1) COChanged = true;
+                    }
+                    else if (sub_json[i].pollutants[j] == "O3") {
+                            O3Cnt++;
+                            if (i == sub_json.length - 1) O3Changed = true;
+                    }
+                    else if (sub_json[i].pollutants[j] == "SO2") {
+                        SO2Cnt++;
+                        if (i == sub_json.length - 1) SO2Changed = true;
+                    }
+                    else if (sub_json[i].pollutants[j] == "NO2") {
+                        NO2Cnt++;
+                        if (i == sub_json.length - 1) NO2Changed = true;
+                    }
+                    else if (sub_json[i].pollutants[j] == "PM10") {
+                        PM10Cnt++;
+                        if (i == sub_json.length - 1) PM10Changed = true;
+                    }
+                    else if (sub_json[i].pollutants[j] == "PM2.5") {
+                        PM25Cnt++;
+                        if (i == sub_json.length - 1) PM2Changed = true;
+                    }            
+                }
+            }
         }
-      }
         totalSub = sub_json.length; // get total submission counts
         reSize = true;
         waitMessage = 2;
@@ -1203,8 +1246,6 @@ function getUserLocation() {
             navigator.geolocation.getCurrentPosition(async position => {
                 const loglat = position.coords.latitude; // find current latitude
                 const loglon = position.coords.longitude; // find current longitude
-                // console.log(loglat);
-                // console.log(loglon);
 
                 const logdata = { // put into them an object
                     loglat,
@@ -1219,10 +1260,11 @@ function getUserLocation() {
                 };
                 const response = await fetch("/api", options); // sending to server
                 const json = await response.json(); // make the response from server into an object
-                console.log(json);
+                
                 myMap.map.flyTo([json.latitude, json.longitude], 7.5); // animate perspective to the current logged position,
                 // myMap.map because I'm using mappa.js, not purely leaflet.js, in order to access the base map library (Leaflet)
                 // the map id has to come before .map method
+
                 // adding marker
                 const popUp = "You're currently here at a latitude of " + json.latitude + " and a longitude of " + json.longitude;
                 const marker = L.marker([json.latitude, json.longitude], {opacity: 0.5})
@@ -1230,11 +1272,6 @@ function getUserLocation() {
                                         .addTo(myMap.map); // myMap.map because I'm using mappa.js, not purely leaflet.js, in order to access the base map library
                                                             // the map id has to come before .map method
                 marker.openPopup();
-                // marker;
-                
-                // marker.map.setLatLng([loglat, loglon]);  
-                // myMap = L.map('mapID').setView([loglat, loglon], 10);
-                // rect(loglat, loglon, 200, 200);
             });
         } else console.log("geolocation is not available");
         getLocation = false; // disable immediately after being triggered on

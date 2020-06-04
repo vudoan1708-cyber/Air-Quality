@@ -16,7 +16,6 @@ app.use(express.json({limit: '1mb'})); // convert any request into a json file
 
 // data logging
 app.post("/api", (request, response) => { // receive the sent data from client
-    // console.log(request.body);
     const data = request.body; // assign the sent data to a variable
     const timestamp = Date.now(); // get the current logged time
     data.timestamp = timestamp; // put the logged time to the currently made data variable
@@ -40,13 +39,10 @@ app.post("/api", (request, response) => { // receive the sent data from client
 
 // submissions
 app.post("/submission", (sub_request, sub_response) => { // receive the sent data from client
-    console.log("I got a submission");
-    console.log(sub_request.body);
     const sub_data = sub_request.body; // assign the sent data to a variable
     const timestamp = Date.now(); // get the current logged time
     sub_data.timestamp = timestamp; // put the logged time to the currently made data variable
     submission_database.insert(sub_data);  // insert all the data into an array called submission_database
-    console.log(submission_database);
     submission_database.find({}).sort({ timestamp: 1 }).exec((err, data) => { // find all data from database, sort them by timestamp and execute 2 functions
         if (err) { // if error
             sub_response.end(); // end and return
