@@ -4,7 +4,8 @@
   "description": "This is the data about air quality",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [
     "air",
@@ -15,7 +16,11 @@
   "license": "MIT",
   "dependencies": {
     "data.js": "^0.12.11",
+    "dotenv": "^17.2.1",
     "express": "^4.17.1",
     "nedb": "^1.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }

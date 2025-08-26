@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const Datastore = require('nedb');
 const app = express();
@@ -11,8 +13,30 @@ const port = process.env.PORT || 5500;
 app.listen(port, () => {
     console.log(`listening at port ${port}`);
 });
-app.use(express.static("public")); // use public folder as the entry to the site
 app.use(express.json({limit: '1mb'})); // convert any request into a json file
+
+app.get('/openaq/locations', async (req, res) => {
+    const { limit } = req.query;
+    const url = `https://api.openaq.org/v3/locations?limit=${limit}`;
+    const response = await fetch(url, {
+        headers: {
+            'X-API-Key': process.env.OPENAQ_API_KEY
+        }
+    });
+    const json = await response.json();
+    res.json(json);
+});
+app.get('/openaq/sensors', async (req, res) => {
+    const { sensors_id } = req.query;
+    const url = `https://api.openaq.org/v3/sensors/${sensors_id}/measurements/daily`;
+    const response = await fetch(url, {
+        headers: {
+            'X-API-Key': process.env.OPENAQ_API_KEY
+        }
+    });
+    const json = await response.json();
+    res.json(json);
+});
 
 // data logging
 app.post("/api", (request, response) => { // receive the sent data from client
@@ -58,5 +82,5 @@ app.post("/submission", (sub_request, sub_response) => { // receive the sent dat
         }
         
     })
-    
 });
+app.use(express.static("public")); // use public folder as the entry to the site

@@ -225,9 +225,31 @@ function setup() {
     init(null);
 }
 
-function init(limit_input) {
-    getAQ(limit_input)
+async function getAQLocations(limit) { // fetching api from openaq.org
+    if (limit == null) limit = "100";
+    try {
+        const response = await fetch(`/openaq/locations?limit=${limit}`);
+        const locations = await response.json();
+    
+        return locations.results;
+    } catch (err) {
+        alert(err.detail ?? err);
+    }
+}
+
+async function getLatestMeasurementsByLocation(locations) {
+    const promises = locations.map((location) => fetch(`/openaq/sensors?sensors_id=${location.sensors}`));
+    const responses = await Promise.all(promises);
+    const jsons = await responses.json();
+
+    console.log('jsons', jsons)
+    return jsons;
+}
+
+function init(limit) {
+    getAQLocations(limit)
         .then(aq => {
+            // getLatestMeasurementsByLocation(locations);
             airData = aq;
             loading = false;
         })
@@ -357,43 +379,43 @@ function enterTheMap() {
 
 function airVisualisation() {
     //console.log("2");
-    for (let i = 0; i < airData.results.length; i++) { // loop through every index of result 
-        for (let p = 0; p < airData.results[i].measurements.length; p++) { // loop through the measurement section in every result
-            country = airData.results[i].country.toLowerCase(); // check each country
-            city = airData.results[i].city; // check each city
-            pollutant = airData.results[i].measurements[p].parameter; // check all pollutants in each country
-            val = Number(airData.results[i].measurements[p].value); // check their values
-            unit = airData.results[i].measurements[p].unit; // check their units
-            latest = airData.results[i].measurements[p].lastUpdated.split('T'); // check current update, split the string into an array with 2 indexes
+    for (let i = 0; i < airData.length; i++) { // loop through every index of result 
+        for (let p = 0; p < airData[i].sensors.length; p++) { // loop through the measurement section in every result
+            country = airData[i]?.country?.code?.toLowerCase(); // check each country
+            city = airData[i].locality ?? airData[i].name; // check each city
+            pollutant = airData[i].sensors[p].parameter.name; // check all pollutants in each country
+            val = Number(airData[i].sensors[p].value); // check their values
+            unit = airData[i].sensors[p].parameter.unit; // check their units
+            latest = airData[i]?.datetimeLast?.local?.split('T'); // check current update, split the string into an array with 2 indexes
             // console.log(latest);                                                     // between letter "T"
 
-            years = latest[0].split("-"); // split the date into years, months, days and put them into arrays (latest[0] is for the years)
-            if (yearsSelection == 1) { // if it's case number 1
-                if (years[0] == "2019") { // if incoming years are 2019s
+            years = latest?.[0]?.split("-"); // split the date into years, months, days and put them into arrays (latest[0] is for the years)
+            if (yearsSelection === 1) { // if it's case number 1
+                if (years?.[0] === "2019") { // if incoming years are 2019s
                     country = country; // get the countries associated with the years
                     latlon = countries[country]; // throw them into latlon array
                 } else {            // if incoming years aren't 2019s
                     country = " ";  // re-assign the variable with some random thing in the string that aren't country IDs
                     latlon = countries[country]; // throw them into the array to make the latlon array undefined
                 }
-            } else if (yearsSelection == 2) { // same logic
-                if (years[0] == "2018") {
+            } else if (yearsSelection === 2) { // same logic
+                if (years?.[0] === "2018") {
                     country = country;
                     latlon = countries[country];
                 } else {
                     country = "Beautiful Boy";
                     latlon = countries[country];
                 }
-            } else if (yearsSelection == 3) { // same logic
-                if (years[0] == "2017") {
+            } else if (yearsSelection === 3) { // same logic
+                if (years?.[0] === "2017") {
                     country = country;
                     latlon = countries[country];
                 } else {
                     country = "Handsome Girl";
                     latlon = countries[country];
                 }
-            } else if (yearsSelection == 4) { // same logic
-              if (years[0] == "2020") {
+            } else if (yearsSelection === 4) { // same logic
+              if (years?.[0] === "2020") {
                     country = country;
                     latlon = countries[country];
                 } else {
@@ -405,7 +427,7 @@ function airVisualisation() {
 
         // filter for pollutants (same logic)
             if (pollutantSelection == 1) {
-                if (pollutant == "co") {
+                if (pollutant === "co") {
                     country = country;
                     latlon = countries[country];
                 } else {
@@ -413,7 +435,7 @@ function airVisualisation() {
                     latlon = countries[country];
                 }
             } else if (pollutantSelection == 2) {
-                if (pollutant == "o3") {
+                if (pollutant === "o3") {
                     country = country;
                     latlon = countries[country];
                 } else {
@@ -421,7 +443,7 @@ function airVisualisation() {
                     latlon = countries[country];
                 }
             } else if (pollutantSelection == 3) {
-                if (pollutant == "so2") {
+                if (pollutant === "so2") {
                     country = country;
                     latlon = countries[country];
                 } else {
@@ -429,7 +451,7 @@ function airVisualisation() {
                     latlon = countries[country];
                 }
             } else if (pollutantSelection == 4) {
-                if (pollutant == "no2") {
+                if (pollutant === "no2") {
                     country = country;
                     latlon = countries[country];
                 } else {
@@ -437,7 +459,7 @@ function airVisualisation() {
                     latlon = countries[country];
                 }
             } else if (pollutantSelection == 5) {
-                if (pollutant == "pm10") {
+                if (pollutant === "pm10") {
                     country = country;
                     latlon = countries[country];
                 } else {
@@ -445,7 +467,7 @@ function airVisualisation() {
                     latlon = countries[country];
                 } 
             } else if (pollutantSelection == 6) {
-                if (pollutant == "pm25") {
+                if (pollutant === "pm25") {
                     country = country;
                     latlon =  countries[country];
                 } else {
@@ -1172,16 +1194,6 @@ function mousePressed() {
             }
         }
     }
-}
-
-async function getAQ(limit_search) { // fetching api from openaq.org
-
-    if (limit_search == null) limit_search = "990";
-    const url = `https://api.openaq.org/v1/latest?limit=${limit_search}`;
-    const response = await fetch(url);
-    airData = await response.json();
-
-    return airData;
 }
 
 async function userSubmission() {
