@@ -26,9 +26,19 @@ app.get('/openaq/locations', async (req, res) => {
     const json = await response.json();
     res.json(json);
 });
-app.get('/openaq/sensors', async (req, res) => {
-    const { sensors_id } = req.query;
-    const url = `https://api.openaq.org/v3/sensors/${sensors_id}/measurements/daily`;
+app.get('/openaq/parameters', async (_, res) => {
+    const url = 'https://api.openaq.org/v3/parameters';
+    const response = await fetch(url, {
+        headers: {
+            'X-API-Key': process.env.OPENAQ_API_KEY
+        }
+    });
+    const json = await response.json();
+    res.json(json);
+});
+app.get('/openaq/parameters/latest', async (req, res) => {
+    const { parameters_id } = req.query;
+    const url = `https://api.openaq.org/v3/parameters/${parameters_id}/latest`;
     const response = await fetch(url, {
         headers: {
             'X-API-Key': process.env.OPENAQ_API_KEY
