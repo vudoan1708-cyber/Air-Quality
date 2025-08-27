@@ -1,17 +1,25 @@
 require('dotenv').config();
 
+const path = require('path');
 const express = require('express');
 const Datastore = require('nedb');
-const app = express();
+const http = require('http');
+const fallback = require('express-history-api-fallback');
 
 const database = new Datastore('database/database.db');
 const submission_database = new Datastore('database/submission_count.db');
+
 database.loadDatabase(); // used to create a database file
 submission_database.loadDatabase();
-// create a host port
+
+const root = path.join(__dirname, './public');
 const port = process.env.PORT || 5500;
-app.listen(port, () => {
-    console.log(`listening at port ${port}`);
+
+const app = express();
+const server = http.createServer(app);
+
+server.listen(port, () => {
+    console.log(`listening on port ${port}`);
 });
 app.use(express.json({limit: '1mb'})); // convert any request into a json file
 
@@ -93,4 +101,7 @@ app.post("/submission", (sub_request, sub_response) => { // receive the sent dat
         
     })
 });
-app.use(express.static("public")); // use public folder as the entry to the site
+
+app.use(express.static(root));
+// fallback
+app.use(fallback('index.html', { root }));
