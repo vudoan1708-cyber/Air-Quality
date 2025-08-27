@@ -409,90 +409,90 @@ function airVisualisation() {
                     latlon = airData[i].measurements?.[p]?.coordinates; // throw them into latlon array
                 } else {            // if incoming years aren't 2019s
                     country = " ";  // re-assign the variable with some random thing in the string that aren't country IDs
-                    latlon = countries[country]; // throw them into the array to make the latlon array undefined
+                    latlon = null;
                 }
             } else if (yearsSelection === 2) { // same logic
                 if (years?.[0] === "2018") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "Beautiful Boy";
-                    latlon = countries[country];
+                    country = "";
+                    latlon = null;
                 }
             } else if (yearsSelection === 3) {
                 if (years?.[0] === "2017") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "Handsome Girl";
-                    latlon = countries[country];
+                    country = "";
+                    latlon = null;
                 }
             } else if (yearsSelection === 4) { // same logic
               if (years?.[0] === "2020") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "eel";
-                    latlon = countries[country];
+                    country = "";
+                    latlon = null;
                 }
             } else latlon = airData[i].measurements?.[p]?.coordinates; // if it's 0, then show everything
 
 
         // filter for pollutants (same logic)
-            if (pollutantSelection == 1) {
+            if (pollutantSelection === 1) {
                 if (pollutant === "co") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = " ";
-                    latlon = countries[country];
+                    country = "";
+                    latlon = null;
                 }
-            } else if (pollutantSelection == 2) {
+            } else if (pollutantSelection === 2) {
                 if (pollutant === "o3") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "Fried Chicken";
-                    latlon = countries[country];
+                    country = "";
+                    latlon = null;
                 }
-            } else if (pollutantSelection == 3) {
+            } else if (pollutantSelection === 3) {
                 if (pollutant === "so2") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "Pizza";
-                    latlon = countries[country];
+                    country = "";
+                    latlon = null;
                 }
-            } else if (pollutantSelection == 4) {
+            } else if (pollutantSelection === 4) {
                 if (pollutant === "no2") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "Hamburger";
-                    latlon = countries[country];
+                    country = "";
+                    latlon = null;
                 }
-            } else if (pollutantSelection == 5) {
+            } else if (pollutantSelection === 5) {
                 if (pollutant === "pm10") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "Hot Pot";
-                    latlon = countries[country];
+                    country = "";
+                    latlon = null;
                 } 
-            } else if (pollutantSelection == 6) {
+            } else if (pollutantSelection === 6) {
                 if (pollutant === "pm25") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "Hello there!!!";
-                    latlon = countries[country];
+                    country = "";
+                    latlon = null;
                 }
             } else latlon = airData[i].measurements?.[p]?.coordinates;
 
-            mappedVal_alpha = map(val, -99, 900, 25, 255); // represents the intensity of pollutants
-            if (!isSubmitted) diameter = sqrt(val) * myMap.zoom();
+            mappedVal_alpha = map(val, -99, 900, 25 * myMap.zoom() * 2, 255); // represents the intensity of pollutants
+            if (!isSubmitted) diameter = sqrt(val / 5) * myMap.zoom();
 
-            if (latlon.latitude && latlon.longitude) { // to check if the information is undefined or not
+            if (latlon?.latitude && latlon?.longitude) { // to check if the information is undefined or not
                 let { latitude: lat, longitude: lon } = latlon;
                 let pos = myMap.latLngToPixel(lat, lon); // change from degree to pixel for lat, lon values
                 if (pollutant == "o3") {
