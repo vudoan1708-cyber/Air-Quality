@@ -617,13 +617,13 @@ class Spaceship {
 
                 fill(0);
                 if (yearsSelection == 1) {
-                    text("2019", this.Fx - 43, this.Fy + 70); // text inside drop down menu
+                    text("2025", this.Fx - 43, this.Fy + 70); // text inside drop down menu
                 } else if (yearsSelection == 2) {
-                    text("2018", this.Fx - 43, this.Fy + 70); // text inside drop down menu
+                    text("2024", this.Fx - 43, this.Fy + 70); // text inside drop down menu
                 } else if (yearsSelection == 3) {
-                    text("2017", this.Fx - 43, this.Fy + 70); // text inside drop down menu
+                    text("2023", this.Fx - 43, this.Fy + 70); // text inside drop down menu
                 } else if (yearsSelection == 4) {
-                    text("2020", this.Fx - 43, this.Fy + 70);
+                    text("2022", this.Fx - 43, this.Fy + 70);
                 } else text("YEAR", this.Fx - 43, this.Fy + 70); // text inside drop down menu
 
                 if (pollutantSelection == 1) {
@@ -650,10 +650,10 @@ class Spaceship {
                     rect(this.Fx - 80, this.Fy + this.F_size + 195, this.F_size + 30, 40); // "all" section
 
                     fill(51);
-                    text("2020", this.Fx - 45, this.Fy + this.F_size + 60); // text in the first section
-                    text("2019", this.Fx - 45, this.Fy + this.F_size + 100); // text in the second section
-                    text("2018", this.Fx - 45, this.Fy + this.F_size + 140); // text in the third section
-                    text("2017", this.Fx - 45, this.Fy + this.F_size + 180); // text in the fourth section
+                    text("2025", this.Fx - 45, this.Fy + this.F_size + 60); // text in the first section
+                    text("2024", this.Fx - 45, this.Fy + this.F_size + 100); // text in the second section
+                    text("2023", this.Fx - 45, this.Fy + this.F_size + 140); // text in the third section
+                    text("2022", this.Fx - 45, this.Fy + this.F_size + 180); // text in the fourth section
                     text("All", this.Fx - 45, this.Fy + this.F_size + 220); // text in the "all" section
                 }
                 if (pollutant_menuDropped) {
@@ -759,7 +759,14 @@ class Spaceship {
     }
 
     // first section
-    year_first_section_hovered() {
+    year_first_section_hovered() { 
+      if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
+              if (mouseY <  (this.F_size + 35) + 40 && mouseY > this.F_size + 35) {
+                  return true;
+              }
+          } else return false;
+    }
+    year_second_section_hovered() {
         if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
             if (mouseY <  (this.F_size + 75) + 40 && mouseY > this.F_size + 75) {
                 return true;
@@ -767,7 +774,7 @@ class Spaceship {
         } else return false;
     }
     // second section
-    year_second_section_hovered() {
+    year_third_section_hovered() {
         if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
             if (mouseY <  (this.F_size + 115) + 40 && mouseY > this.F_size + 115) {
                 return true;
@@ -775,20 +782,12 @@ class Spaceship {
         } else return false;
     }
     // third section
-    year_third_section_hovered() {
+    year_fourth_section_hovered() {
         if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
             if (mouseY <  (this.F_size + 155) + 40 && mouseY > this.F_size + 155) {
                 return true;
             }
         } else return false;
-    }
-    // first section (2020)
-    year_fourth_section_hovered() { 
-      if (mouseX < width - 30 && mouseX > width + this.Fx - 80) {
-              if (mouseY <  (this.F_size + 35) + 40 && mouseY > this.F_size + 35) {
-                  return true;
-              }
-          } else return false;
     }
     // the all section
     year_the_all_section_hovered() {

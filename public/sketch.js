@@ -37,7 +37,7 @@ let frames = 160;
 let btn_activated = 1; // for keeping track of the appearance of all the tabs, buttons...
 let clickCnt = 0;   // for keeping track of number of time the menu button (spaceship) is pressed
 let timeCount = 0; // time count till the submitted notification disappear
-let yearsSelection = 4; // for keeping track of selected years
+let yearsSelection = 1; // for keeping track of selected years
 let pollutantSelection = 0;
 let angle = 0; // for visualising the data
 let waitMessage = 0; // wait time before a location is marked
@@ -61,7 +61,6 @@ let years; // check the years
 
 let mappedVal_alpha; // represents the intensity
 let diameter; // calculate the area of circles relatively to zoom levels
-let latlon;
 
 let mappedScl;
 let mappedAlpha;
@@ -255,6 +254,10 @@ async function getLatestMeasurementsByParameter(parameterId) {
     return json.results;
 }
 
+const pollutantList = [
+    'co', 'o3', 'so2', 'no2', 'pm10', 'pm25',
+];
+
 function init(limit) {
     getAQParameters()
         .then((parameters) => {
@@ -265,7 +268,7 @@ function init(limit) {
             return Promise.all(promises).catch((err) => { alert(err.detail ?? err); });
         })
         .then((responses) => {
-            airData = responses;
+            airData = responses.filter((res) => pollutantList.includes(res.name));
             loading = false;
         })
         .catch(err => {
@@ -396,15 +399,17 @@ function enterTheMap() {
 function airVisualisation() {
     for (let i = 0; i < airData.length; i++) {
         for (let p = 0; p < airData[i].measurements.length; p++) {
+            let latlon;
+
             pollutant = airData[i].name;
-            unit = airData[i].unit;
+            unit = airData[i].units;
             // country = airData[i]?.country?.code?.toLowerCase();
             // city = airData[i].locality ?? airData[i].name;
             val = Number(airData[i].measurements?.[p].value);
             latest = airData[i].measurements?.[p]?.datetime?.local?.split('T');
-            years = latest?.[0]?.split("-"); // split the date into years, months, days and put them into arrays (latest[0] is for the years)
-            if (yearsSelection === 1) { // if it's case number 1
-                if (years?.[0] === "2019") { // if incoming years are 2019s
+            years = latest?.[0]?.split("-");
+            if (yearsSelection === 1) {
+                if (years?.[0] === "2025") {
                     country = country; // get the countries associated with the years
                     latlon = airData[i].measurements?.[p]?.coordinates; // throw them into latlon array
                 } else {            // if incoming years aren't 2019s
@@ -412,7 +417,7 @@ function airVisualisation() {
                     latlon = null;
                 }
             } else if (yearsSelection === 2) { // same logic
-                if (years?.[0] === "2018") {
+                if (years?.[0] === "2024") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
@@ -420,7 +425,7 @@ function airVisualisation() {
                     latlon = null;
                 }
             } else if (yearsSelection === 3) {
-                if (years?.[0] === "2017") {
+                if (years?.[0] === "2023") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
@@ -428,7 +433,7 @@ function airVisualisation() {
                     latlon = null;
                 }
             } else if (yearsSelection === 4) { // same logic
-              if (years?.[0] === "2020") {
+              if (years?.[0] === "2022") {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
@@ -440,7 +445,7 @@ function airVisualisation() {
 
         // filter for pollutants (same logic)
             if (pollutantSelection === 1) {
-                if (pollutant === "co") {
+                if (pollutant === "co" && latlon) {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
@@ -448,7 +453,7 @@ function airVisualisation() {
                     latlon = null;
                 }
             } else if (pollutantSelection === 2) {
-                if (pollutant === "o3") {
+                if (pollutant === "o3" && latlon) {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
@@ -456,7 +461,7 @@ function airVisualisation() {
                     latlon = null;
                 }
             } else if (pollutantSelection === 3) {
-                if (pollutant === "so2") {
+                if (pollutant === "so2" && latlon) {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
@@ -464,7 +469,7 @@ function airVisualisation() {
                     latlon = null;
                 }
             } else if (pollutantSelection === 4) {
-                if (pollutant === "no2") {
+                if (pollutant === "no2" && latlon) {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
@@ -472,7 +477,7 @@ function airVisualisation() {
                     latlon = null;
                 }
             } else if (pollutantSelection === 5) {
-                if (pollutant === "pm10") {
+                if (pollutant === "pm10" && latlon) {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
@@ -480,14 +485,14 @@ function airVisualisation() {
                     latlon = null;
                 } 
             } else if (pollutantSelection === 6) {
-                if (pollutant === "pm25") {
+                if (pollutant === "pm25" && latlon) {
                     country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
                     country = "";
                     latlon = null;
                 }
-            } else latlon = airData[i].measurements?.[p]?.coordinates;
+            } else if (latlon) latlon = airData[i].measurements?.[p]?.coordinates;
 
             mappedVal_alpha = map(val, -99, 900, 25 * myMap.zoom() * 2, 255); // represents the intensity of pollutants
             if (!isSubmitted) diameter = sqrt(val / 5) * myMap.zoom();
@@ -495,30 +500,32 @@ function airVisualisation() {
             if (latlon?.latitude && latlon?.longitude) { // to check if the information is undefined or not
                 let { latitude: lat, longitude: lon } = latlon;
                 let pos = myMap.latLngToPixel(lat, lon); // change from degree to pixel for lat, lon values
-                if (pollutant == "o3") {
+                let displayName = pollutant;
+
+                if (pollutant === "o3") {
                     stroke(255, 0, 200, mappedVal_alpha); // purple-ish
-                    pollutant = "Ozone (O3)";
-                } else if (pollutant == "so2") {
+                    displayName = "Ozone (O3)";
+                } else if (pollutant === "so2") {
                     stroke(0, 100, 200, mappedVal_alpha); // blue-ish
-                    pollutant = "Sulfur Dioxide (SO2)";
-                } else if (pollutant == "no2") {
+                    displayName = "Sulfur Dioxide (SO2)";
+                } else if (pollutant === "no2") {
                     stroke(100, 200, 100, mappedVal_alpha); // green-ish
-                    pollutant = "Nitrogen Dioxide (NO2)";
-                } else if (pollutant == "pm10") {
+                    displayName = "Nitrogen Dioxide (NO2)";
+                } else if (pollutant === "pm10") {
                     stroke(255, 187, 15, mappedVal_alpha); // orange-ish
-                    pollutant = "PM10";
-                } else if (pollutant == "pm25") {
+                    displayName = "PM10";
+                } else if (pollutant === "pm25") {
                     stroke(255, 0, 0, mappedVal_alpha);
-                    pollutant = "PM2.5";
-                } else if (pollutant == "co") {
+                    displayName = "PM2.5";
+                } else if (pollutant === "co") {
                     stroke(100, mappedVal_alpha);
-                    pollutant = "Carbon Monoxide (CO)";
+                    displayName = "Carbon Monoxide (CO)";
                 }
 
                 let d = dist(mouseX, mouseY, pos.x, pos.y);
                 push();
                     noFill();
-                    if ( d < diameter / 2) {
+                    if (d < diameter / 2) {
                         strokeWeight(3);
                     } else strokeWeight(1);
                     ellipse(pos.x, pos.y, diameter);
@@ -534,24 +541,24 @@ function airVisualisation() {
                         // line(pos.x, pos.y, pos.x + dx, pos.y + dy);
                     endShape(CLOSE);
                 pop();
-                // if (d < diameter / 2) {
-                //     // console.log("HOVERED");
-                //     push();
-                //         strokeWeight(2);
-                //         rectMode(CENTER);
-                //         fill(255);
-                //         rect(pos.x - 150, pos.y - 50, 250, 120);
-                //         fill(0, 220);
-                //         textAlign(CENTER);
-                //         // text(country.toUpperCase(), pos.x - 150, pos.y - 40, 250, 120);
-                //         // text(city, pos.x - 150, pos.y - 20, 250, 120);
-                //         text(pollutant, pos.x - 150, pos.y, 250, 120);
-                //         text(val + ": " + unit, pos.x - 150, pos.y + 20, 250, 120);
-                //         if (latest?.[0]) {
-                //             text("Latest Update: " + latest[0], pos.x - 150, pos.y + 40, 250, 120);
-                //         }
-                //     pop();
-                // }
+                if (d < diameter / 2) {
+                    // console.log("HOVERED");
+                    push();
+                        strokeWeight(2);
+                        rectMode(CENTER);
+                        fill(255);
+                        rect(pos.x - 150, pos.y - 50, 250, 120);
+                        fill(0, 220);
+                        textAlign(CENTER);
+                        // text(country.toUpperCase(), pos.x - 150, pos.y - 40, 250, 120);
+                        // text(city, pos.x - 150, pos.y - 20, 250, 120);
+                        text(displayName, pos.x - 150, pos.y, 250, 120);
+                        text(`${val} ${unit}`, pos.x - 150, pos.y + 20, 250, 120);
+                        if (latest?.[0]) {
+                            text("Latest Update: " + latest[0], pos.x - 150, pos.y + 40, 250, 120);
+                        }
+                    pop();
+                }
             }
 
             // console.log(latlon);
