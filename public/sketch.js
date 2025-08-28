@@ -1230,7 +1230,7 @@ async function userSubmission() {
             },
             body: JSON.stringify(data_counts)
         };
-        const sub_response = await fetch("/submission", sub_options); // sending to server
+        const sub_response = await fetch('/submission', sub_options); // sending to server
         const sub_json = await sub_response.json(); // make the response from server into an object
         
         if (!reSize) { // if not submitted
@@ -1279,28 +1279,12 @@ function getUserLocation() {
             navigator.geolocation.getCurrentPosition(async position => {
                 const loglat = position.coords.latitude; // find current latitude
                 const loglon = position.coords.longitude; // find current longitude
-
-                const logdata = { // put into them an object
-                    loglat,
-                    loglon
-                };
-                const options = { // put that object into a bigger one that contains all the ritual options that will be sent to the server
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(logdata)
-                };
-                const response = await fetch("/api", options); // sending to server
-                const json = await response.json(); // make the response from server into an object
                 
-                myMap.map.flyTo([json.latitude, json.longitude], 7.5); // animate perspective to the current logged position,
-                // myMap.map because I'm using mappa.js, not purely leaflet.js, in order to access the base map library (Leaflet)
-                // the map id has to come before .map method
+                myMap.map.flyTo([loglat, loglon], 7.5);
 
                 // adding marker
-                const popUp = "You're currently here at a latitude of " + json.latitude + " and a longitude of " + json.longitude;
-                const marker = L.marker([json.latitude, json.longitude], {opacity: 0.5})
+                const popUp = "You're currently here at a latitude of " + loglat + " and a longitude of " + loglon;
+                const marker = L.marker([loglat, loglon], {opacity: 0.5})
                                         .bindPopup(popUp)
                                         .addTo(myMap.map); // myMap.map because I'm using mappa.js, not purely leaflet.js, in order to access the base map library
                                                             // the map id has to come before .map method
