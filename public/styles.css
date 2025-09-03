@@ -112,5 +112,11 @@ canvas {
 		background-color: blue;
 		border-radius: 10px;
 		color: white;
-	}	
+	}
+
+	body #pollutantDetails:has(*) {
+		left: unset;
+		right: 0;
+		transform: none;
+	}
 }
