@@ -53,6 +53,18 @@ app.get('/openaq/parameters/latest', async (req, res) => {
     res.json(json);
 });
 
+app.get('/geonames/countryCodeByLatLon', async (req, res) => {
+    const { lat, lng } = req.query;
+    if (!lat || !lng) {
+        throw {
+            detail: 'lat or lon values weren\'t provided in the request query',
+        };
+    }
+    const response = await fetch(`http://api.geonames.org/countryCode?lat=${lat}&lng=${lng}&type=JSON&username=airpollutants`);
+    const json = await response.json();
+    res.json(json);
+})
+
 // data logging
 // app.post('/api', async (request, response) => {
 //     const data = request.body;

@@ -51,7 +51,6 @@ let SO2Cnt = 0;
 let PM10Cnt = 0;
 let PM25Cnt = 0;
 
-let country; // check each country
 let pollutant; // check all pollutants in each country
 let val; // check their values
 let unit; // check their unit
@@ -192,14 +191,22 @@ let canvas;
 let questionMrk;
 let earthImg;
 
+let presetCountryCodes = {};
+
 let loadingData = 0; // loading screen
 const loadingSteps = 5;
+
+const pollutantDetailsElement = document.getElementById('pollutantDetails');
 
 function mediaLoader() {
 	loadingData++;
 }
 
 function setup() {
+    const childNodeLength = pollutantDetailsElement.childNodes.length;
+    if (!childNodeLength) {
+        pollutantDetailsElement.style.display = 'none';
+    }
     // Create canvas
     canvas = createCanvas(window.innerWidth, window.innerHeight).parent("mapID");
 
@@ -218,6 +225,8 @@ function setup() {
     countries = loadJSON('json/countries/countries.json', mediaLoader);
     questionMrk = loadImage('assets/img/question.png', mediaLoader);
     earthImg = loadImage('assets/img/earth.png', mediaLoader);
+
+    // presetCountryCodes = Object.keys(countries);
 
     // text fixed setup
     textSize(15);
@@ -408,6 +417,76 @@ function enterTheMap() {
     pop();
 }
 
+async function getCountryCodeByLatLon(lat, lon) {
+    try {
+        const response = await fetch(`/geonames/countryCodeByLatLon?lat=${String(lat)}&lng=${String(lon)}`);
+        const results = await response.json();
+
+        return results;
+    } catch (err) {
+        alert(err.detail ?? err);
+    }
+}
+
+const maxTries = 6;
+function displayCountryPollutantInfo({
+    coords: { lat, lon },
+    displayName,
+    val,
+    unit,
+    latest,
+}) {
+    function displayCountryName({ h3, tries = 0 }) {
+        const placeholder = 'Loading...';
+        const countryObject = presetCountryCodes[`${lat}_${lon}`];
+        if (countryObject) {
+            h3.textContent = countryObject.countryName;
+            return;
+        }
+        const currentTrie = tries + 1;
+        if (!countryObject && currentTrie < maxTries) {
+            h3.textContent = placeholder;
+            const id = setTimeout(() => {
+                displayCountryName({ h3, tries: currentTrie });
+                clearTimeout(id);
+            }, 500);
+            return;
+        }
+        if (!countryObject && currentTrie === maxTries) {
+            h3.textContent = 'Cannot get country info 🥹';
+        }
+    }
+    const div = document.createElement('div');
+    div.id = `${lat}_${lon}`;
+    div.className = 'country_pollutant_details';
+    const h3 = document.createElement('h3');
+    h3.className = 'title';
+    displayCountryName({ h3 });
+    div.appendChild(h3);
+    
+    const p1 = document.createElement('p');
+    p1.textContent = displayName;
+    div.appendChild(p1);
+    const p2 = document.createElement('p');
+    p2.textContent = `${val} ${unit}`;
+    div.appendChild(p2);
+    if (latest) {
+        const p3 = document.createElement('p');
+        p3.textContent = "Latest Update: " + latest;
+        div.appendChild(p3);
+    }
+
+    pollutantDetailsElement.appendChild(div);
+}
+
+function deleteCountryPollutantInfo({
+    coords: { lat, lon },
+}) {
+    const element = document.getElementById(`${lat}_${lon}`);
+    if (!element) return;
+    pollutantDetailsElement.removeChild(element);
+}
+
 function airVisualisation() {
     for (let i = 0; i < airData.length; i++) {
         for (let p = 0; p < airData[i].measurements.length; p++) {
@@ -422,34 +501,26 @@ function airVisualisation() {
             years = latest?.[0]?.split("-");
             if (yearsSelection === 1) {
                 if (years?.[0] === "2025") {
-                    country = country; // get the countries associated with the years
                     latlon = airData[i].measurements?.[p]?.coordinates; // throw them into latlon array
                 } else {            // if incoming years aren't 2019s
-                    country = " ";  // re-assign the variable with some random thing in the string that aren't country IDs
                     latlon = null;
                 }
             } else if (yearsSelection === 2) { // same logic
                 if (years?.[0] === "2024") {
-                    country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "";
                     latlon = null;
                 }
             } else if (yearsSelection === 3) {
                 if (years?.[0] === "2023") {
-                    country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "";
                     latlon = null;
                 }
             } else if (yearsSelection === 4) { // same logic
               if (years?.[0] === "2022") {
-                    country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "";
                     latlon = null;
                 }
             } else latlon = airData[i].measurements?.[p]?.coordinates; // if it's 0, then show everything
@@ -458,50 +529,38 @@ function airVisualisation() {
         // filter for pollutants (same logic)
             if (pollutantSelection === 1) {
                 if (pollutant === "co" && latlon) {
-                    country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "";
                     latlon = null;
                 }
             } else if (pollutantSelection === 2) {
                 if (pollutant === "o3" && latlon) {
-                    country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "";
                     latlon = null;
                 }
             } else if (pollutantSelection === 3) {
                 if (pollutant === "so2" && latlon) {
-                    country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "";
                     latlon = null;
                 }
             } else if (pollutantSelection === 4) {
                 if (pollutant === "no2" && latlon) {
-                    country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "";
                     latlon = null;
                 }
             } else if (pollutantSelection === 5) {
                 if (pollutant === "pm10" && latlon) {
-                    country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "";
                     latlon = null;
                 } 
             } else if (pollutantSelection === 6) {
                 if (pollutant === "pm25" && latlon) {
-                    country = country;
                     latlon = airData[i].measurements?.[p]?.coordinates;
                 } else {
-                    country = "";
                     latlon = null;
                 }
             } else if (latlon) latlon = airData[i].measurements?.[p]?.coordinates;
@@ -554,22 +613,44 @@ function airVisualisation() {
                     endShape(CLOSE);
                 pop();
                 if (d < diameter / 2) {
-                    // console.log("HOVERED");
-                    push();
-                        strokeWeight(2);
-                        rectMode(CENTER);
-                        fill(255);
-                        rect(pos.x - 150, pos.y - 50, 250, 120);
-                        fill(0, 220);
-                        textAlign(CENTER);
-                        // text(country.toUpperCase(), pos.x - 150, pos.y - 40, 250, 120);
-                        // text(city, pos.x - 150, pos.y - 20, 250, 120);
-                        text(displayName, pos.x - 150, pos.y, 250, 120);
-                        text(`${val} ${unit}`, pos.x - 150, pos.y + 20, 250, 120);
-                        if (latest?.[0]) {
-                            text("Latest Update: " + latest[0], pos.x - 150, pos.y + 40, 250, 120);
-                        }
-                    pop();
+                    if (pollutantDetailsElement.style.display === 'none') {
+                        pollutantDetailsElement.style.display = 'flex';
+                    }
+                    if (!presetCountryCodes[`${lat}_${lon}`]) {
+                        getCountryCodeByLatLon(lat, lon)
+                            .then((country) => {
+                                presetCountryCodes[`${lat}_${lon}`] = country;
+                            });
+                    }
+                    if (!document.getElementById(`${lat}_${lon}`)) {
+                        displayCountryPollutantInfo({
+                            coords: { lat, lon },
+                            displayName,
+                            val,
+                            unit,
+                            latest: latest?.[0],
+                        });
+                    }
+                    
+                    // push();
+                    //     strokeWeight(2);
+                    //     rectMode(CENTER);
+                    //     fill(255);
+                    //     rect(pos.x - 150, pos.y - 50, 250, 120);
+                    //     fill(0, 220);
+                    //     textAlign(CENTER);
+                    //     text(presetCountryCodes[`${lat}_${lon}`]?.countryName ?? 'Loading...', pos.x - 150, pos.y - 40, 250, 120);
+                    //     // text(city, pos.x - 150, pos.y - 20, 250, 120);
+                    //     text(displayName, pos.x - 150, pos.y, 250, 120);
+                    //     text(`${val} ${unit}`, pos.x - 150, pos.y + 20, 250, 120);
+                    //     if (latest?.[0]) {
+                    //         text("Latest Update: " + latest[0], pos.x - 150, pos.y + 40, 250, 120);
+                    //     }
+                    // pop();
+                } else {
+                    deleteCountryPollutantInfo({
+                        coords: { lat, lon },
+                    });
                 }
             }
 
