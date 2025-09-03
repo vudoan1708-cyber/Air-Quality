@@ -6,7 +6,6 @@ let countries;
 let legend;
 let spaceship;
 
-let loading = true; // loading screen 
 let mapEntered = false; // for mobile detection
 let getLocation = false; // trigger geolocation
 let movingForward = false; // for kepping track of the spaceship-like button movement
@@ -193,12 +192,11 @@ let canvas;
 let questionMrk;
 let earthImg;
 
+let loadingData = 0; // loading screen
+const loadingSteps = 5;
 
-function preload() {
-    //     airData = loadJSON('json/aq.json');
-    countries = loadJSON('json/countries/countries.json');
-    questionMrk = loadImage('assets/img/question.png');
-    earthImg = loadImage('assets/img/earth.png');
+function mediaLoader() {
+	loadingData++;
 }
 
 function setup() {
@@ -206,6 +204,7 @@ function setup() {
     canvas = createCanvas(window.innerWidth, window.innerHeight).parent("mapID");
 
     frameRate(frames);
+    textAlign(CENTER);
     angleMode(DEGREES);
 
     // Create a tile map and overlay the canvas on top.
@@ -215,6 +214,10 @@ function setup() {
     // classes
     legend = new Legend();
     spaceship = new Spaceship();
+
+    countries = loadJSON('json/countries/countries.json', mediaLoader);
+    questionMrk = loadImage('assets/img/question.png', mediaLoader);
+    earthImg = loadImage('assets/img/earth.png', mediaLoader);
 
     // text fixed setup
     textSize(15);
@@ -265,11 +268,12 @@ function init(limit) {
                 ...parameter,
                 measurements: await getLatestMeasurementsByParameter(parameter.id),
             }));
+            loadingData++;
             return Promise.all(promises).catch((err) => { alert(err.detail ?? err); });
         })
         .then((responses) => {
             airData = responses.filter((res) => pollutantList.includes(res.name));
-            loading = false;
+            loadingData++;
         })
         .catch(err => {
             alert(err.detail ?? err);
@@ -277,79 +281,87 @@ function init(limit) {
         });
 }
 
+let particles = [];
+let maxParticles = 600; // more particles to fill screen
+let fade = 0;
 function draw() {
-    // to update bubbles on the map
-
-    if (loading) {
-        mappedScl = map(sin(frameCount) * 9, -1, 1, 0.15, 1);
-        background(0, 250);
+    if (loadingData < loadingSteps) {
         push();
-            rectMode(CENTER);
-            push();
-            fill(255, 0, 0, 200);
-            translate(width / 2, height / 2);
-            rotate(45);
-            scale(mappedScl, mappedScl);
-            rect(0, 0, 100, 100);
-            pop();
+            background(30);
 
-            push();
-            fill(0, 255, 0, 200);
-            translate(width / 2 - 200, height / 2);
-            rotate(45);
-            scale(mappedScl, mappedScl);
-            rect(0, 0, 100, 100);
-            pop();
+            // Add particles based on progress
+            let targetCount = map(loadingData, 0, loadingSteps, 0, maxParticles);
+            if (particles.length < targetCount) {
+                particles.push(new Particle(random(width), random(height)));
+            }
 
-            push();
-            fill(0, 0, 255, 200);
-            translate(width / 2 + 200, height / 2);
-            rotate(45);
-            scale(mappedScl, mappedScl);
-            rect(0, 0, 100, 100);
-            pop();
+            for (let p of particles) {
+                p.update();
+                p.show();
+            }
+
+            fill(255);
+            text('Loading data...', width / 2, height - 40);
+
+            fill(100);
+            rect(width / 4, height - 20, width / 2, 10, 5);
+            fill(0, 200, 0);
+            rect(width / 4, height - 20, (width / 2) * (loadingData / loadingSteps), 10, 5);
         pop();
     } else {
-        enterTheMap(); // for checking electronic devices
-        if (mapEntered) {
-            clear(); // transparent background
-            airVisualisation();
+        // Transition: fade out particles, fade in new background
+        background(30, 200 - fade); // old bg fades
+        fill(0, fade); // new bg fades in
+        rect(0, 0, width, height);
+
+        for (let p of particles) {
+            p.alpha -= 3; // fade particles out
+            p.show();
+        }
+
+        fade += 3; // increase fade
+        if (fade > 255) {
+            enterTheMap(); // for checking electronic devices
+            if (mapEntered) {
+                clear(); // transparent background
+                airVisualisation();
+                
+                mappedAlpha = map(animTime, 0, 15, 255, 0); // for animation with alpha
+                if (waitMessage == 1) { // wait message before geolocation starts
+                    if (animTime <= 14) { 
+                    animTime++;
+                    } else {
+                    animTime = 0;
+                    waitMessage = 0;
+                    }
+                    push();
+                    fill(0, mappedAlpha);
+                    noStroke();
+                    rectMode(CENTER);
+                    rect(width / 2, height / 2, 250, 100);
+                    fill(255, mappedAlpha);
+                    textAlign(CENTER);
+                    textSize(20);
+                    text("Just a sec...", width / 2 + 10, height / 2 + 40, 200, 100);
+                    pop();
+                } 
             
-            mappedAlpha = map(animTime, 0, 15, 255, 0); // for animation with alpha
-            if (waitMessage == 1) { // wait message before geolocation starts
-                if (animTime <= 14) { 
-                  animTime++;
-                } else {
-                  animTime = 0;
-                  waitMessage = 0;
+                if (waitMessage == 2) {
+                if (animTime < 15) animTime++;
+                else {
+                    animTime = 0;
+                    waitMessage = 0; 
                 }
-                push();
-                  fill(0, mappedAlpha);
-                  noStroke();
-                  rectMode(CENTER);
-                  rect(width / 2, height / 2, 250, 100);
-                  fill(255, mappedAlpha);
-                  textAlign(CENTER);
-                  textSize(20);
-                  text("Just a sec...", width / 2 + 10, height / 2 + 40, 200, 100);
-                pop();
-              } 
-          
-            if (waitMessage == 2) {
-              if (animTime < 15) animTime++;
-              else {
-                animTime = 0;
-                waitMessage = 0; 
-              }
-                push();
-                  fill(0, mappedAlpha);
-                  noStroke();
-                  rectMode(CENTER);
-                  rect(width / 2, height / 2, 250, 100);
-                  fill(255, mappedAlpha);
-                  textAlign(CENTER)
-                  text("YOU COULD BE A HERO OF TOMORROW", width / 2, height / 2, 250, 50);
-                pop();
+                    push();
+                    fill(0, mappedAlpha);
+                    noStroke();
+                    rectMode(CENTER);
+                    rect(width / 2, height / 2, 250, 100);
+                    fill(255, mappedAlpha);
+                    textAlign(CENTER)
+                    text("YOU COULD BE A HERO OF TOMORROW", width / 2, height / 2, 250, 50);
+                    pop();
+                }
             }
         }
     }
@@ -631,7 +643,7 @@ function drawLegend() {
       
       fill(255);
       if (reSize) { // if user submits the form, show all the texts
-        text("Total Votes For A Brighter Day  " + totalSub, x + 10, y + 25, 250, 50);
+        text(`Total Votes For A Brighter Day: ${totalSub})`, x + 10, y + 25, 250, 50);
         text("Votes for CO  " + COCnt, x + 10, y + 50, 150, 50);
         text("Votes for O3  " + O3Cnt, x + 10, y + 75, 150, 50);
         text("Votes for NO2  " + NO2Cnt, x + 10, y + 100, 150, 50);
@@ -671,7 +683,7 @@ function drawLegend() {
 
 function touchStarted() {
     // enter the map
-    if (!loading) {
+    if (loadingData === loadingSteps) {
         if (!mapEntered) {
             let d = dist(mouseX, mouseY, width / 2, height / 2);
             if (d < 200) {
@@ -944,7 +956,7 @@ function touchStarted() {
 
 function mousePressed() {
     // enter the map
-    if (!loading) {
+    if (loadingData === loadingSteps) {
         if (!mapEntered) {
             let d = dist(mouseX, mouseY, width / 2, height / 2);
             if (d < 200) {
