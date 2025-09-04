@@ -607,6 +607,7 @@ function airVisualisation() {
                 }
 
                 let d = dist(mouseX, mouseY, pos.x, pos.y);
+                let animatedDotDiameter = diameter;
                 push();
                     noFill();
                     if (d < diameter / 2) {
@@ -615,12 +616,12 @@ function airVisualisation() {
                     ellipse(pos.x, pos.y, diameter);
                     if (angle <= 360) {
                         angle += 2;
-                        diameter -= 10;
+                        animatedDotDiameter -= 10;
                     } else angle = 0;
                     beginShape(POINTS);
                         strokeWeight(3.5);
-                        let dx = cos(angle) * diameter / 2;
-                        let dy = sin(angle) * diameter / 2;
+                        let dx = cos(angle) * animatedDotDiameter / 2;
+                        let dy = sin(angle) * animatedDotDiameter / 2;
                         vertex(pos.x + dx, pos.y + dy);
                         // line(pos.x, pos.y, pos.x + dx, pos.y + dy);
                     endShape(CLOSE);
