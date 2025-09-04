@@ -192,11 +192,23 @@ let questionMrk;
 let earthImg;
 
 let presetCountryCodes = {};
+let visited = {};
 
 let loadingData = 0; // loading screen
 const loadingSteps = 5;
 
 const pollutantDetailsElement = document.getElementById('pollutantDetails');
+// let infoDetailShownOnMobile = false;
+// document.body.addEventListener('click', (e) => {
+//     if (!mobile) return;
+//     if (pollutantDetailsElement.contains(e.target) || pollutantDetailsElement === e.target) {
+//         infoDetailShownOnMobile = true;
+//         return;
+//     }
+//     if (e.target !== pollutantDetailsElement) {
+//         infoDetailShownOnMobile = false;
+//     }
+// });
 
 function mediaLoader() {
 	loadingData++;
@@ -440,24 +452,24 @@ function displayCountryPollutantInfo({
         const placeholder = 'Loading...';
         const countryObject = presetCountryCodes[`${lat}_${lon}`];
         if (countryObject) {
-            h3.textContent = countryObject.countryName;
+            const suffix = countryObject.adminName1 ? ` - ${countryObject.adminName1}` : '';
+            h3.textContent = `${countryObject.countryName}${suffix}` ?? countryObject.status?.message;
             return;
         }
-        const currentTrie = tries + 1;
-        if (!countryObject && currentTrie < maxTries) {
+        if (!countryObject && tries < maxTries) {
             h3.textContent = placeholder;
             const id = setTimeout(() => {
-                displayCountryName({ h3, tries: currentTrie });
+                displayCountryName({ h3, tries: tries + 1 });
                 clearTimeout(id);
             }, 500);
             return;
         }
-        if (!countryObject && currentTrie === maxTries) {
+        if (!countryObject && tries === maxTries) {
             h3.textContent = 'Cannot get country info 🥹';
         }
     }
     const div = document.createElement('div');
-    div.id = `${lat}_${lon}`;
+    div.id = `${lat}_${lon}_${displayName}`;
     div.className = 'country_pollutant_details';
     const h3 = document.createElement('h3');
     h3.className = 'title';
@@ -481,15 +493,16 @@ function displayCountryPollutantInfo({
 
 function deleteCountryPollutantInfo({
     coords: { lat, lon },
+    displayName,
 }) {
-    const element = document.getElementById(`${lat}_${lon}`);
+    const element = document.getElementById(`${lat}_${lon}_${displayName}`);
     if (!element) return;
     pollutantDetailsElement.removeChild(element);
 }
 
 function airVisualisation() {
     for (let i = 0; i < airData.length; i++) {
-        for (let p = 0; p < airData[i].measurements.length; p++) {
+        for (let p = 0; p < airData[i]?.measurements?.length; p++) {
             let latlon;
 
             pollutant = airData[i].name;
@@ -616,13 +629,14 @@ function airVisualisation() {
                     if (pollutantDetailsElement.style.display === 'none') {
                         pollutantDetailsElement.style.display = 'flex';
                     }
-                    if (!presetCountryCodes[`${lat}_${lon}`]) {
+                    if (!visited[`${lat.toFixed(4)}_${lon.toFixed(4)}`]) {
+                        visited[`${lat.toFixed(4)}_${lon.toFixed(4)}`] = true;
                         getCountryCodeByLatLon(lat, lon)
                             .then((country) => {
                                 presetCountryCodes[`${lat}_${lon}`] = country;
                             });
                     }
-                    if (!document.getElementById(`${lat}_${lon}`)) {
+                    if (!document.getElementById(`${lat}_${lon}_${displayName}`)) {
                         displayCountryPollutantInfo({
                             coords: { lat, lon },
                             displayName,
@@ -650,6 +664,7 @@ function airVisualisation() {
                 } else {
                     deleteCountryPollutantInfo({
                         coords: { lat, lon },
+                        displayName,
                     });
                 }
             }
@@ -770,6 +785,7 @@ function touchStarted() {
             if (d < 200) {
                 mapEntered = true;
                 mobile = true;
+                // infoDetailShownOnMobile = true;
             }
         }
         

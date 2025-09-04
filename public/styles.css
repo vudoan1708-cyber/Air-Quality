@@ -25,15 +25,6 @@ body {
       -ms-overflow: hidden;
 }
 
-body #form {
-	position: absolute;
-	bottom: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	margin: auto;
-	z-index: 1000000;
-}
-
 body #form #limitInput {
 	float: left;
 	opacity: 0.70;
@@ -62,7 +53,7 @@ body #form #search:hover {
 	background-color: lightblue;
 }
 
-body #pollutantDetails:has(*) {
+body #pollutantDetails:not(:empty) {
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
@@ -114,9 +105,16 @@ canvas {
 		color: white;
 	}
 
-	body #pollutantDetails:has(*) {
+	body #pollutantDetails:not(:empty) {
 		left: unset;
 		right: 0;
 		transform: none;
+		max-width: 300px;
+		overflow-x: auto;
+	}
+
+	#pollutantDetails .country_pollutant_details .title {
+		max-width: 120px;
+		overflow-x: auto;
 	}
 }

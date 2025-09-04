@@ -60,7 +60,7 @@ app.get('/geonames/countryCodeByLatLon', async (req, res) => {
             detail: 'lat or lon values weren\'t provided in the request query',
         };
     }
-    const response = await fetch(`http://api.geonames.org/countryCode?lat=${lat}&lng=${lng}&type=JSON&username=airpollutants`);
+    const response = await fetch(`http://api.geonames.org/countrySubdivisionJSON?lat=${lat}&lng=${lng}&username=airpollutants`);
     const json = await response.json();
     res.json(json);
 })
